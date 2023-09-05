@@ -37,8 +37,8 @@ mongoose
   });
 
 app.use("/api/users", userRoutes);
-app.use("/api/users/storeOwners", storeOwnerRoutes);
-app.use("/api/users/normalUsers", normalUserRoutes);
+app.use("/api/storeOwners", storeOwnerRoutes);
+app.use("/api/normalUsers", normalUserRoutes);
 
 app.use(requireAuth);
 app.use("/api/stores", storeRoutes);
