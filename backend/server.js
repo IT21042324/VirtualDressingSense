@@ -3,6 +3,13 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
+const storeOwnerRoutes = require("./routes/storeOwner");
+const normalUserRoutes = require("./routes/normalUser");
+const userRoutes = require("./routes/user");
+const storeRoutes = require("./routes/store");
+const itemRoutes = require("./routes/item");
+const brandRoutes = require("./routes/brand");
+
 //Creating an express app
 const app = express();
 
@@ -28,3 +35,9 @@ mongoose
     console.log(err.message);
   });
 
+app.use("/api/users/storeOwners", storeOwnerRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/users/normalUsers", normalUserRoutes);
+app.use("/api/stores", storeRoutes);
+app.use("/api/items", itemRoutes);
+app.use("/api/brands", brandRoutes);
