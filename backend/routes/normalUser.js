@@ -1,4 +1,4 @@
-const Router = require("express").Router();
+const router = require("express").Router();
 
 const {
   updateNormalUserById,
@@ -6,8 +6,8 @@ const {
   findNormalUser,
 } = require("../controllers/normalUser");
 
-Router.get("/:id", findNormalUserById);
-Router.get("/", findNormalUser);
-Router.patch("/update/:id", updateNormalUserById);
+router.get("/:id", findNormalUserById);
+router.get("/", findNormalUser);
+router.patch("/update/:id", updateNormalUserById);
 
-module.exports = Router;
+module.exports = router;
