@@ -73,6 +73,7 @@ const getAllUsers = async function (req, res) {
   try {
     const users = await userModel.find();
 
+    console.log(users);
     res.json(users);
   } catch (err) {
     res.send(err.message);

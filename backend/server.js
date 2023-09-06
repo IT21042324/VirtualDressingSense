@@ -40,7 +40,6 @@ app.use("/api/users", userRoutes);
 app.use("/api/storeOwners", storeOwnerRoutes);
 app.use("/api/normalUsers", normalUserRoutes);
 
-app.use(requireAuth);
 app.use("/api/stores", storeRoutes);
 app.use("/api/items", itemRoutes);
 app.use("/api/brands", brandRoutes);

@@ -1,20 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import { Button, SafeAreaView, StyleSheet, Platform } from "react-native";
+import { Provider as PaperProvider } from "react-native-paper";
 
+import { globalStyles } from "./styles/global";
+import { Login } from "./screens/Login";
 export default function App() {
+  const getFonts = () => {};
+
   return (
-    <SafeAreaView style={styles.container}>
-      <Text>Hello React Native!</Text>
-      <StatusBar style="auto" />
+    <SafeAreaView style={globalStyles.container}>
+      <Login />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
