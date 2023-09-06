@@ -8,8 +8,8 @@ const storeOwnerSchema = new Schema({
     required: true,
   },
   store: {
-    type: Schema.Types.ObjectId,
-    ref: "Store",
+    type: Array,
+    default: [],
   },
 });
 

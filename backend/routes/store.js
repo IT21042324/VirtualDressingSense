@@ -7,13 +7,15 @@ const {
   getAllStores,
   deleteStoreById,
   deleteItemFromStoreUsingStoreId,
+  getAllStoresForOwner,
 } = require("../controllers/store");
 
 router.get("/:id", getStoreById);
 router.patch("/add/item", addItemToStore);
 router.post("/", createStore);
-router.patch("/", getAllStores);
+router.get("/", getAllStores);
 router.delete("/delete/:id", deleteStoreById);
 router.patch("/delete/item/:id", deleteItemFromStoreUsingStoreId);
+router.get("/owner/:id", getAllStoresForOwner);
 
 module.exports = router;

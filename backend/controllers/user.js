@@ -51,7 +51,7 @@ const userSignUp = async function (req, res) {
   }
 };
 
-const createNormalUser = async (userId) => {
+const createStoreOwner = async (userId) => {
   try {
     await storeOwnerModel.create({ parent: userId });
   } catch (err) {
@@ -60,7 +60,7 @@ const createNormalUser = async (userId) => {
   }
 };
 
-const createStoreOwner = async (userId) => {
+const createNormalUser = async (userId) => {
   try {
     await normalUserModel.create({ parent: userId });
   } catch (err) {

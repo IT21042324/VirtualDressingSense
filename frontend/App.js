@@ -1,14 +1,13 @@
-import { Button, SafeAreaView, StyleSheet, Platform } from "react-native";
+import { SafeAreaView } from "react-native";
 import { Provider as PaperProvider } from "react-native-paper";
 
 import { globalStyles } from "./styles/global";
-import { Login } from "./screens/Login";
-export default function App() {
-  const getFonts = () => {};
+import Navigator from "./routes/storeNavigator";
 
+export default function App() {
   return (
     <SafeAreaView style={globalStyles.container}>
-      <Login />
+      <Navigator />
     </SafeAreaView>
   );
 }

@@ -1,4 +1,4 @@
-const storeModel = require("../controllers/store");
+const storeModel = require("../model/store");
 const itemModel = require("../model/item");
 
 const createStore = async (req, res) => {
@@ -49,9 +49,12 @@ const addItemToStore = async (req, res) => {
       });
     } else {
       const item = await itemModel.create(req.body);
-      await storeModel.findByIdAndUpdate(storeId, {
-        $push: { items: item._id },
-      });
+
+      if (item) {
+        await storeModel.findByIdAndUpdate(storeId, {
+          $push: { items: item._id },
+        });
+      }
     }
     res.status(200).json(item);
   } catch (err) {
@@ -101,6 +104,18 @@ const deleteItemFromStoreUsingStoreId = async (req, res) => {
   }
 };
 
+const getAllStoresForOwner = async (req, res) => {
+  try {
+    const stores = await storeModel.find({
+      owner: req.params.id,
+    });
+    res.status(200).json(stores);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json(err);
+  }
+};
+
 module.exports = {
   createStore,
   addItemToStore,
@@ -108,4 +123,5 @@ module.exports = {
   getAllStores,
   deleteStoreById,
   deleteItemFromStoreUsingStoreId,
+  getAllStoresForOwner,
 };
