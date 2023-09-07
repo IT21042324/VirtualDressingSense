@@ -5,14 +5,49 @@ import {
   Text,
   Button,
   TouchableOpacity,
+  Modal,
 } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { CustomModal } from "../../components/storeManagement/customModal";
+import axios from "axios";
+import Toast from "react-native-toast-message";
 
-export default function StoreSelection({ navigation, storeDataSet }) {
+export default function StoreSelection({ navigation }) {
   const [selectedStore, setSelectedStore] = useState("");
+  const [modalVisibility, setModalVisibility] = useState(false);
+  const [storeDataSet, setStoreDataSet] = useState([]);
 
-  const navigateToAddStore = () => {
-    navigation.navigate("Add Store");
+  useEffect(() => {
+    const token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Zjc0M2UwNDAzNzQxZDQzNmMxZTZiZSIsImlhdCI6MTY5MzkyNjM2OCwiZXhwIjoxNjk0MTg1NTY4fQ.S5gfmagFa3zWtUlTyMbTpxEum8JfMLg8ufEJC0rRroU";
+
+    const _id = "64f8754e1cd2fd7cda7d8725";
+
+    async function getDataSet() {
+      try {
+        const { data } = await axios.get(
+          `http://192.168.1.3:8084/api/stores/owner/${_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setStoreDataSet(data);
+      } catch (err) {
+        Toast.show({
+          type: "error",
+          text1: "Unable to fetch data",
+          text2: "Please restart the application",
+        });
+      }
+    }
+    getDataSet();
+  }, []);
+
+  const changeModalVisibility = (status) => {
+    setModalVisibility(status);
   };
 
   return (
@@ -22,15 +57,17 @@ export default function StoreSelection({ navigation, storeDataSet }) {
           <TouchableOpacity
             activeOpacity={0.5}
             style={styles.actionBtn}
-            onPress={() => {
-              navigateToAddStore();
-            }}
+            onPress={() => changeModalVisibility(true)}
           >
             <Text style={{ color: "white", fontSize: 50, fontWeight: "bold" }}>
               +
             </Text>
           </TouchableOpacity>
         </View>
+      )}
+
+      {modalVisibility && (
+        <CustomModal changeModalVisibility={changeModalVisibility} />
       )}
 
       {(storeDataSet?.length === 0 || [].length === 0) && (
@@ -55,12 +92,16 @@ export default function StoreSelection({ navigation, storeDataSet }) {
                   styles.item,
                   {
                     backgroundColor:
-                      selectedStore?.name === item.name ? "dodgerblue" : "grey",
+                      selectedStore?.storeName === item.storeName
+                        ? "dodgerblue"
+                        : "grey",
                   },
                 ]}
               >
-                <Text style={styles.storeName}>{item.name}</Text>
-                <Text style={styles.location}>{item.name}</Text>
+                <Text style={styles.storeName} numberOfLines={1}>
+                  {item.storeName}
+                </Text>
+                <Text style={styles.location}>{item.address}</Text>
               </View>
             </TouchableOpacity>
           );
@@ -84,19 +125,22 @@ const styles = StyleSheet.create({
   item: {
     flex: 1,
     marginTop: 5,
+    marginBottom: 10,
     paddingTop: 5,
     paddingBottom: 15,
     paddingLeft: 5,
     fontSize: 24,
   },
   storeName: {
-    fontSize: 40,
+    fontSize: 30,
     fontWeight: "bold",
+    margin: 5,
     color: "white",
   },
   location: {
-    fontSize: 26,
+    fontSize: 20,
     color: "white",
+    marginLeft: 5,
   },
   proceedButton: {
     marginTop: 20,

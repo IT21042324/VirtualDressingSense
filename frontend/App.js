@@ -1,5 +1,6 @@
 import { SafeAreaView } from "react-native";
-import { Provider as PaperProvider } from "react-native-paper";
+import "react-native-gesture-handler";
+import Toast from "react-native-toast-message";
 
 import { globalStyles } from "./styles/global";
 import Navigator from "./routes/storeNavigator";
@@ -8,6 +9,7 @@ export default function App() {
   return (
     <SafeAreaView style={globalStyles.container}>
       <Navigator />
+      <Toast />
     </SafeAreaView>
   );
 }

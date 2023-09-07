@@ -11,4 +11,9 @@ export const globalStyles = StyleSheet.create({
     fontSize: 18,
     color: "#333",
   },
+  errorText: {
+    color: "crimson",
+    fontWeight: "bold",
+    marginTop: 2,
+  },
 });
