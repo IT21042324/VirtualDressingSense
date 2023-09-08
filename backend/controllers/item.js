@@ -2,16 +2,8 @@ const itemModel = require("../model/item");
 const storeModel = require("../model/store");
 
 const saveItem = async (req, res) => {
-  const { store, image, brand, sizes, type } = req.body;
-
   try {
-    const item = new itemModel({
-      store,
-      image,
-      brand,
-      sizes,
-      type,
-    });
+    const item = new itemModel(req.body);
     await item.save();
     res.status(200).json({ message: "Item saved successfully" });
   } catch (err) {

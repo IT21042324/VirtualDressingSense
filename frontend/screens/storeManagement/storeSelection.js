@@ -5,10 +5,9 @@ import {
   Text,
   Button,
   TouchableOpacity,
-  Modal,
 } from "react-native";
 import { useState, useEffect } from "react";
-import { CustomModal } from "../../components/storeManagement/customModal";
+import { AddStoreModal } from "../../components/storeManagement/modals/addStore";
 import axios from "axios";
 import Toast from "react-native-toast-message";
 
@@ -36,10 +35,11 @@ export default function StoreSelection({ navigation }) {
 
         setStoreDataSet(data);
       } catch (err) {
+        console.log(err);
         Toast.show({
           type: "error",
           text1: "Unable to fetch data",
-          text2: "Please restart the application",
+          text2: err,
         });
       }
     }
@@ -50,34 +50,36 @@ export default function StoreSelection({ navigation }) {
     setModalVisibility(status);
   };
 
+  const navigateToStorePage = () => {
+    navigation.navigate("Store", selectedStore);
+  };
+
   return (
     <View style={styles.container}>
-      {(storeDataSet?.length || [].length <= 7) && (
-        <View style={{ zIndex: 100 }}>
+      {storeDataSet?.length <= 7 && (
+        <View style={styles.actionBtnContainer}>
           <TouchableOpacity
             activeOpacity={0.5}
             style={styles.actionBtn}
             onPress={() => changeModalVisibility(true)}
           >
-            <Text style={{ color: "white", fontSize: 50, fontWeight: "bold" }}>
-              +
-            </Text>
+            <Text style={styles.actionBtnText}>+</Text>
           </TouchableOpacity>
         </View>
       )}
 
       {modalVisibility && (
-        <CustomModal changeModalVisibility={changeModalVisibility} />
+        <AddStoreModal changeModalVisibility={changeModalVisibility} />
       )}
 
-      {(storeDataSet?.length === 0 || [].length === 0) && (
+      {storeDataSet?.length === 0 && (
         <View style={styles.emptyStoreListContainer}>
-          <Text style={{ fontWeight: "bold" }}>No Stores To Display</Text>
+          <Text style={styles.emptyStoreListText}>No Stores To Display</Text>
         </View>
       )}
 
       <FlatList
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         data={storeDataSet}
         renderItem={({ item }) => {
           return (
@@ -107,9 +109,13 @@ export default function StoreSelection({ navigation }) {
           );
         }}
       />
-      {(storeDataSet?.length > 0 || [].length > 0) && (
+      {storeDataSet?.length > 0 && (
         <View style={styles.proceedButton}>
-          <Button title="Proceed" disabled={!selectedStore} />
+          <Button
+            title="Proceed"
+            disabled={!selectedStore}
+            onPress={navigateToStorePage}
+          />
         </View>
       )}
     </View>
@@ -143,24 +149,36 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   proceedButton: {
-    marginTop: 20,
+    marginBottom: 40,
     flexDirection: "row",
     justifyContent: "flex-end",
   },
+
   actionBtn: {
     alignItems: "center",
     width: 70,
-    position: "absolute",
-    top: 450,
-    right: 5,
     height: 70,
     backgroundColor: "dodgerblue",
     borderRadius: 100,
+  },
+  actionBtnContainer: {
+    zIndex: 100,
+    position: "absolute",
+    top: 450,
+    right: 5,
+  },
+  actionBtnText: {
+    color: "white",
+    fontSize: 50,
+    fontWeight: "bold",
   },
   emptyStoreListContainer: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
     top: 20,
+  },
+  emptyStoreListText: {
+    fontWeight: "bold",
   },
 });
