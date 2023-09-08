@@ -16,6 +16,7 @@ import GlobalConstants from "../globalConstants";
 import { MultiSelectionDropDown } from "../multipleSelectionList";
 import axios from "axios";
 import Toast from "react-native-toast-message";
+import { ImageUpload } from "./imageUpload";
 
 const ItemSchema = yup.object({
   brandName: yup.string().required(),
@@ -31,6 +32,7 @@ const ItemSchema = yup.object({
   neckCircumference: yup.number().required(),
   chestHeight: yup.number().required(),
   bustHeight: yup.number().required(),
+  image: yup.string().required(),
 });
 
 const initialValues = {
@@ -99,6 +101,12 @@ export const AddItemForm = ({ changeVisibility, storeId }) => {
     setSelectedMainType(type);
   };
 
+  const [selectedImage, setSelectedImage] = useState("");
+
+  const setImage = (image) => {
+    setSelectedImage(image);
+  };
+
   const onSubmitHandler = async (values) => {
     setShowActivityIndicator(true);
 
@@ -125,6 +133,7 @@ export const AddItemForm = ({ changeVisibility, storeId }) => {
       measurementType: values.measurementType,
       size: values.size,
       subType: values.subType,
+      image: values.image,
     };
 
     try {
@@ -162,6 +171,7 @@ export const AddItemForm = ({ changeVisibility, storeId }) => {
       formikRef.current.setFieldValue("size", selectedSize);
       formikRef.current.setFieldValue("subType", selectedType);
       formikRef.current.setFieldValue("mainType", selectedMainType);
+      formikRef.current.setFieldValue("image", selectedImage);
       formikRef.current.setFieldValue(
         "measurementType",
         selectedMeasurementType
@@ -175,6 +185,7 @@ export const AddItemForm = ({ changeVisibility, storeId }) => {
     selectedCategory,
     selectedMainType,
     selectedMeasurementType,
+    selectedImage,
   ]);
 
   return (
@@ -191,6 +202,11 @@ export const AddItemForm = ({ changeVisibility, storeId }) => {
 
         return (
           <ScrollView>
+            <ImageUpload chooseImage={setImage} />
+            <Text style={globalStyles.errorText}>
+              {props.touched["image"] && props.errors["image"]}
+            </Text>
+
             <TextInput
               style={styles.textInput}
               placeholder="Item Name"
@@ -235,7 +251,7 @@ export const AddItemForm = ({ changeVisibility, storeId }) => {
 
             <DropDown
               data={mainTypeSelectionOption}
-              searchBoolean={true}
+              searchBoolean={false}
               onSelectFunction={mainTypeSelectionHandler}
               placeholder="Select Main Type"
             />
@@ -257,7 +273,7 @@ export const AddItemForm = ({ changeVisibility, storeId }) => {
 
             <DropDown
               data={sizeSelectionOption}
-              searchBoolean={true}
+              searchBoolean={false}
               onSelectFunction={sizeSelectionHandler}
               placeholder="Select Size"
             />

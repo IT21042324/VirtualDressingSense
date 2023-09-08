@@ -29,19 +29,17 @@ export default function Store({ navigation }) {
           <Text style={styles.floatingBtnInline}>+</Text>
         </TouchableOpacity>
       </View>
-
       {modalVisibility && (
         <AddItemModal
           changeModalVisibility={changeModalVisibility}
           storeId={storeId}
         />
       )}
-
       {items.length !== 0 ? (
         <FlatList
           data={items}
-          keyExtractor={(item) => item._id}
-          renderItem={(item) => <ItemCard />}
+          keyExtractor={(item) => item}
+          renderItem={(item) => <ItemCard itemId={item.item} />}
         />
       ) : (
         <View style={styles.emptyListView}>
