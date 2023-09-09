@@ -140,9 +140,14 @@ const deleteItemFromStoreUsingStoreId = async (req, res) => {
   const { itemId } = req.body;
 
   try {
-    const store = await storeModel.findByIdAndUpdate(req.params.id, {
-      $pull: { items: itemId },
-    });
+    const store = await storeModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        $pull: { items: itemId },
+      },
+      { new: true }
+    );
+    await store.save();
     res.status(200).json(store);
   } catch (err) {
     console.log(err.message);
