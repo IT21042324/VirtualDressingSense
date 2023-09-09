@@ -57,14 +57,24 @@ const addItemToStore = async (req, res) => {
     brand ? (item = await itemAlreadyExists(brand._id, type)) : (item = false);
 
     if (item) {
-      await itemModel.findByIdAndUpdate(item._id, {
-        $pull: { store: storeId }, //to remove the storeId
-        $push: { store: storeId }, //to again reenter the storeId
-      });
-      await storeModel.findByIdAndUpdate(storeId, {
-        $pull: { items: item._id },
-        $push: { items: item._id },
-      });
+      const updatedItem = await itemModel.findByIdAndUpdate(
+        item._id,
+        {
+          $pull: { store: storeId }, //to remove the storeId
+          $push: { store: storeId }, //to again reenter the storeId
+        },
+        { new: true }
+      );
+      const updatedStore = await storeModel.findByIdAndUpdate(
+        storeId,
+        {
+          $pull: { items: item._id },
+          $push: { items: item._id },
+        },
+        { new: true }
+      );
+
+      res.status(200).json({ item: updatedItem, store: updatedStore });
     } else {
       let newBrand;
 
@@ -93,14 +103,14 @@ const addItemToStore = async (req, res) => {
         });
 
         if (newItem) {
-          await storeModel.findByIdAndUpdate(
+          const updatedStore = await storeModel.findByIdAndUpdate(
             storeId,
             {
               $push: { items: newItem._id },
             },
             { new: true }
           );
-          res.status(200).json(newItem);
+          res.status(200).json({ item: newItem, store: updatedStore });
         }
       } else {
         throw new Error("Unable to locate/create Brand");

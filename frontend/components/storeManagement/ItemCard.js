@@ -42,8 +42,6 @@ export const ItemCard = ({ itemId, storeId }) => {
         type: "RemoveItemFromStore",
         payload: { itemId, storeId },
       });
-
-      console.log(stores);
     } catch (err) {
       Toast.show({
         type: "error",
