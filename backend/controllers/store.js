@@ -198,6 +198,18 @@ const getAllItemsOfTheStoreUsingStoreId = async (req, res) => {
   }
 };
 
+const updateBasicStoreDetails = async (req, res) => {
+  try {
+    const store = await storeModel.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    res.status(200).json(store);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json(err);
+  }
+};
+
 module.exports = {
   createStore,
   addItemToStore,
@@ -207,4 +219,5 @@ module.exports = {
   deleteItemFromStoreUsingStoreId,
   getAllStoresForOwner,
   getAllItemsOfTheStoreUsingStoreId,
+  updateBasicStoreDetails,
 };

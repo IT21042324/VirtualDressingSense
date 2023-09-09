@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useState, useEffect } from "react";
 import { AddStoreModal } from "../../components/storeManagement/modals/addStore";
+import { UpdateStoreModal } from "../../components/storeManagement/modals/updateStore";
 import axios from "axios";
 import Toast from "react-native-toast-message";
 import { UseStoreContext } from "../../hooks/useStoreContext";
@@ -16,9 +17,40 @@ export default function StoreSelection({ navigation }) {
   const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
   const [selectedStore, setSelectedStore] = useState("");
   const [modalVisibility, setModalVisibility] = useState(false);
+  const [updateVisibility, setUpdateModalVisibility] = useState(false);
+
   const [storeDataSet, setStoreDataSet] = useState([]);
 
   const { stores, dispatch } = UseStoreContext();
+
+  const [showOptions, setShowOptions] = useState(false);
+
+  const deleteStoreHandler = async (_id) => {
+    const token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Zjc0M2UwNDAzNzQxZDQzNmMxZTZiZSIsImlhdCI6MTY5MzkyNjM2OCwiZXhwIjoxNjk0MTg1NTY4fQ.S5gfmagFa3zWtUlTyMbTpxEum8JfMLg8ufEJC0rRroU";
+    try {
+      const { data } = await axios.delete(
+        `${REACT_APP_BACKEND_URL}/api/stores/delete/${_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      Toast.show({
+        type: "success",
+        text1: "Successfully deleted store",
+        text2: data,
+      });
+    } catch (err) {
+      console.log(err);
+      Toast.show({
+        type: "error",
+        text1: "Unable to delete data",
+        text2: err,
+      });
+    }
+  };
 
   useEffect(() => {
     const token =
@@ -55,6 +87,10 @@ export default function StoreSelection({ navigation }) {
     setModalVisibility(status);
   };
 
+  const updateModalVisibility = (status) => {
+    setUpdateModalVisibility(status);
+  };
+
   const navigateToStorePage = () => {
     const relevantStoreList = stores.filter((stor) => {
       return stor._id === selectedStore._id;
@@ -80,6 +116,13 @@ export default function StoreSelection({ navigation }) {
         <AddStoreModal changeModalVisibility={changeModalVisibility} />
       )}
 
+      {updateVisibility && (
+        <UpdateStoreModal
+          changeModalVisibility={updateModalVisibility}
+          storeDetails={storeDataSet[0]}
+        />
+      )}
+
       {storeDataSet?.length === 0 && (
         <View style={styles.emptyStoreListContainer}>
           <Text style={styles.emptyStoreListText}>No Stores To Display</Text>
@@ -91,29 +134,87 @@ export default function StoreSelection({ navigation }) {
         data={storeDataSet}
         renderItem={({ item }) => {
           return (
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() => {
-                setSelectedStore(item);
-              }}
-            >
-              <View
-                style={[
-                  styles.item,
-                  {
-                    backgroundColor:
-                      selectedStore?.storeName === item.storeName
-                        ? "dodgerblue"
-                        : "grey",
-                  },
-                ]}
+            <>
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => {
+                  setSelectedStore(item);
+                }}
               >
-                <Text style={styles.storeName} numberOfLines={1}>
-                  {item.storeName}
-                </Text>
-                <Text style={styles.location}>{item.address}</Text>
-              </View>
-            </TouchableOpacity>
+                <View
+                  style={[
+                    styles.item,
+                    {
+                      backgroundColor:
+                        selectedStore?.storeName === item.storeName
+                          ? "dodgerblue"
+                          : "grey",
+                    },
+                  ]}
+                >
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
+                      marginRight: 10,
+                    }}
+                    onPress={() => {
+                      setShowOptions(!showOptions);
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                        fontWeight: "bold",
+                        marginBottom: 10,
+                      }}
+                    >
+                      {showOptions ? "Hide Options" : "Show Options"}
+                    </Text>
+                  </TouchableOpacity>
+
+                  <Text style={styles.storeName} numberOfLines={1}>
+                    {item.storeName}
+                  </Text>
+                  <Text style={styles.location}>{item.address}</Text>
+
+                  {showOptions && (
+                    <View
+                      style={{
+                        justifyContent: "space-around",
+                        marginRight: 10,
+                        marginTop: 40,
+                        fontWeight: "bold",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <Button
+                        title="Update Store"
+                        color={"purple"}
+                        backgroundColor="white"
+                        onPress={() => updateModalVisibility(true)}
+                        disabled={
+                          selectedStore?.storeName === item.storeName
+                            ? false
+                            : true
+                        }
+                      />
+                      <Button
+                        title="Delete Store"
+                        color={"red"}
+                        backgroundColor="red"
+                        onPress={() => deleteStoreHandler(item._id)}
+                        disabled={
+                          selectedStore?.storeName === item.storeName
+                            ? false
+                            : true
+                        }
+                      />
+                    </View>
+                  )}
+                </View>
+              </TouchableOpacity>
+            </>
           );
         }}
       />
