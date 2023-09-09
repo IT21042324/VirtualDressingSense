@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-
+const BACKENDURL = process.env.BACKENDURL;
 const requireAuth = async (req, res, next) => {
   const { authorization } = req.headers;
   console.log(authorization);
@@ -21,7 +21,7 @@ const requireAuth = async (req, res, next) => {
     const { id } = jwt.verify(token, process.env.SECRET);
 
     // Retrieve user data from API using the id and role from the token
-    const response = await fetch(`http://localhost:8084/api/users/${id}`);
+    const response = await fetch(`${BACKENDURL}/api/users/${id}`);
     const data = await response.json();
 
     // Attach user data to the request object

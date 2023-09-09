@@ -13,6 +13,8 @@ import { useState } from "react";
 import * as yup from "yup";
 import { globalStyles } from "../../styles/global";
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const StoreSchema = yup.object({
   storeName: yup.string().required().min(4),
   address: yup.string().required().min(4),
@@ -28,15 +30,11 @@ export const AddStoreForm = ({ changeVisibility }) => {
   const onSubmitHandler = async (values) => {
     try {
       setShowActivityIndicator(true);
-      const { data } = await axios.post(
-        "http://192.168.1.3:8084/api/stores/",
-        values,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const { data } = await axios.post("${backendUrl}/api/stores/", values, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       Toast.show({
         type: "success",

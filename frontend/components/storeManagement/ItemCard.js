@@ -5,6 +5,7 @@ import { Avatar, Button, Card, Text } from "react-native-paper";
 import { useEffect, useState } from "react";
 
 const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 export const ItemCard = ({ itemId }) => {
   const [item, setItem] = useState({});
@@ -12,12 +13,10 @@ export const ItemCard = ({ itemId }) => {
     console.log(itemId);
     const loadItem = async () => {
       try {
-        const { data } = await axios.get(
-          `http://192.168.1.3:8084/api/items/${itemId}`
-        );
+        const { data } = await axios.get(`${backendUrl}/api/items/${itemId}`);
         console.log(data);
         const brandData = await axios.get(
-          `http://192.168.1.3:8084/api/brands/${data.brand}`
+          `${backendUrl}/api/brands/${data.brand}`
         );
 
         setItem({ ...data, brandName: brandData.data.brandName });
