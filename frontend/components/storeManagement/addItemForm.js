@@ -17,6 +17,7 @@ import { MultiSelectionDropDown } from "../multipleSelectionList";
 import axios from "axios";
 import Toast from "react-native-toast-message";
 import { ImageUpload } from "./imageUpload";
+import { UseStoreContext } from "../../hooks/useStoreContext";
 
 const ItemSchema = yup.object({
   brandName: yup.string().required(),
@@ -107,6 +108,8 @@ export const AddItemForm = ({ changeVisibility, storeId }) => {
     setSelectedImage(image);
   };
 
+  const { stores, dispatch } = UseStoreContext();
+
   const onSubmitHandler = async (values) => {
     setShowActivityIndicator(true);
 
@@ -152,6 +155,11 @@ export const AddItemForm = ({ changeVisibility, storeId }) => {
       Toast.show({
         type: "success",
         text1: "Item Creation Successfully",
+      });
+
+      dispatch({
+        type: "AddItem",
+        payload: { item: data.items.slice(-1), storeId },
       });
     } catch (err) {
       Toast.show({
