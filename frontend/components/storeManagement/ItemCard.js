@@ -5,18 +5,20 @@ import { Avatar, Button, Card, Text } from "react-native-paper";
 import { useEffect, useState } from "react";
 
 const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 export const ItemCard = ({ itemId }) => {
+  const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
+
   const [item, setItem] = useState({});
+
   useEffect(() => {
-    console.log(itemId);
     const loadItem = async () => {
       try {
-        const { data } = await axios.get(`${backendUrl}/api/items/${itemId}`);
-        console.log(data);
+        const { data } = await axios.get(
+          `${REACT_APP_BACKEND_URL}/api/items/${itemId}`
+        );
         const brandData = await axios.get(
-          `${backendUrl}/api/brands/${data.brand}`
+          `${REACT_APP_BACKEND_URL}/api/brands/${data.brand}`
         );
 
         setItem({ ...data, brandName: brandData.data.brandName });
@@ -26,6 +28,7 @@ export const ItemCard = ({ itemId }) => {
     };
     loadItem();
   }, []);
+
   return (
     <>
       <Card>
@@ -34,7 +37,8 @@ export const ItemCard = ({ itemId }) => {
           subtitle={item.brandName}
           left={LeftContent}
         />
-        <Card.Cover source={{ uri: item.image }} />
+        <Card.Cover source={{ uri: "data:image/jpeg;base64," + item.image }} />
+
         <Card.Content>
           <Text variant="titleLarge">{`Gender : ${item.gender}`}</Text>
           <FlatList

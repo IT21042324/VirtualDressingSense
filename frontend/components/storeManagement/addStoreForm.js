@@ -13,8 +13,6 @@ import { useState } from "react";
 import * as yup from "yup";
 import { globalStyles } from "../../styles/global";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
-
 const StoreSchema = yup.object({
   storeName: yup.string().required().min(4),
   address: yup.string().required().min(4),
@@ -22,6 +20,8 @@ const StoreSchema = yup.object({
 });
 
 export const AddStoreForm = ({ changeVisibility }) => {
+  const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
+
   const token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Zjc0M2UwNDAzNzQxZDQzNmMxZTZiZSIsImlhdCI6MTY5MzkyNjM2OCwiZXhwIjoxNjk0MTg1NTY4fQ.S5gfmagFa3zWtUlTyMbTpxEum8JfMLg8ufEJC0rRroU";
 
@@ -30,11 +30,15 @@ export const AddStoreForm = ({ changeVisibility }) => {
   const onSubmitHandler = async (values) => {
     try {
       setShowActivityIndicator(true);
-      const { data } = await axios.post("${backendUrl}/api/stores/", values, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const { data } = await axios.post(
+        `${REACT_APP_BACKEND_URL}/api/stores/`,
+        values,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       Toast.show({
         type: "success",

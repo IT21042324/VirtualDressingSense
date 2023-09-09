@@ -15,8 +15,9 @@ const requireAuth = require("./middleware/requireAuth");
 const app = express();
 
 // Configure middleware functions
-app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.json({ limit: "100mb" }));
+app.use(express.urlencoded({ limit: "100mb", extended: true }));
+
 app.use(cors());
 
 // Get port number and database URI from environment variables

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Button, Image, View, Platform, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { Button, Image, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 
 export function ImageUpload({ chooseImage }) {
   const [image, setImage] = useState(null);
@@ -9,12 +10,16 @@ export function ImageUpload({ chooseImage }) {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      quality: 1,
+      quality: 0.5,
     });
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
-      chooseImage(result.assets[0].uri);
+      // convert image to base 64 url
+      let base64Url = await FileSystem.readAsStringAsync(result.assets[0].uri, {
+        encoding: "base64",
+      });
+      chooseImage(base64Url);
     }
   };
 
@@ -38,5 +43,3 @@ export function ImageUpload({ chooseImage }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({});
