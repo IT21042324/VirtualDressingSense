@@ -94,20 +94,16 @@ const recommondation = async (req, res) => {
         neckCircumference: itemMeasurement.neckCircumference,
       };
     } else if (user.gender === "male" && selectedItem.gender === "female") {
-      res
-        .status(200)
-        .json({
-          message: "You,re a Male, This not for you | Try these dresses ",
-          Dress: recommondedDress,
-        });
+      res.status(200).json({
+        message: "You,re a Male, This not for you | Try these dresses ",
+        Dress: recommondedDress,
+      });
       return;
     } else if (user.gender === "female" && selectedItem.gender === "male") {
-      res
-        .status(200)
-        .json({
-          message: "You,re a Female, This not for you | Try these dresses ",
-          Dress: recommondedDress,
-        });
+      res.status(200).json({
+        message: "You,re a Female, This not for you | Try these dresses ",
+        Dress: recommondedDress,
+      });
       return;
     } else {
       res.status(404).json({ message: "No Dress Found !!!" });
@@ -118,25 +114,21 @@ const recommondation = async (req, res) => {
 
     if (result == true) {
       if (recommondedDress.length > 1) {
-        res
-          .status(200)
-          .json({
-            message: "Perfect Choise :), May you like these also ",
-            Dress: moreDress,
-          });
+        res.status(200).json({
+          message: "Perfect Choice :), May you like these also ",
+          Dress: moreDress,
+        });
       } else {
-        res.status(200).json({ message: "Perfect Choise :)" });
+        res.status(200).json({ message: "Perfect Choice :)" });
       }
     } else {
       if (recommondedDress.length > 1) {
-        res
-          .status(200)
-          .json({
-            message: "Not A Perfect Choise , Check these dresses",
-            Dress: recommondedDress,
-          });
+        res.status(200).json({
+          message: "Not A Perfect Choice , Check these dresses",
+          Dress: recommondedDress,
+        });
       } else {
-        res.status(200).json({ message: "Not A Perfect Choise " });
+        res.status(200).json({ message: "Not A Perfect Choice " });
       }
     }
   } catch (err) {
