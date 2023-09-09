@@ -18,6 +18,8 @@ import axios from "axios";
 import Toast from "react-native-toast-message";
 import { ImageUpload } from "./imageUpload";
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const ItemSchema = yup.object({
   brandName: yup.string().required(),
   subType: yup.array().required(),
@@ -138,7 +140,7 @@ export const AddItemForm = ({ changeVisibility, storeId }) => {
 
     try {
       const { data } = await axios.patch(
-        `http://192.168.1.3:8084/api/stores/add/item/${storeId}`,
+        `${backendUrl}/api/stores/add/item/${storeId}`,
         newItem,
         {
           headers: {

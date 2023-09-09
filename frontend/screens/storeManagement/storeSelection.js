@@ -11,6 +11,8 @@ import { AddStoreModal } from "../../components/storeManagement/modals/addStore"
 import axios from "axios";
 import Toast from "react-native-toast-message";
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 export default function StoreSelection({ navigation }) {
   const [selectedStore, setSelectedStore] = useState("");
   const [modalVisibility, setModalVisibility] = useState(false);
@@ -25,7 +27,7 @@ export default function StoreSelection({ navigation }) {
     async function getDataSet() {
       try {
         const { data } = await axios.get(
-          `http://192.168.1.3:8084/api/stores/owner/${_id}`,
+          `${backendUrl}/api/stores/owner/${_id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
