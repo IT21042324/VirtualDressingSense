@@ -142,6 +142,8 @@ const deleteItemFromStoreUsingStoreId = async (req, res) => {
   itemId = new ObjectId(itemId);
 
   try {
+    const item = await itemModel.findByIdAndDelete(itemId);
+
     const store = await storeModel.findByIdAndUpdate(
       req.params.id,
       {
@@ -149,6 +151,7 @@ const deleteItemFromStoreUsingStoreId = async (req, res) => {
       },
       { new: true }
     );
+
     res.status(200).json(store);
   } catch (err) {
     console.log(err);
