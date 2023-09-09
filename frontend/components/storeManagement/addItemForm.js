@@ -159,7 +159,7 @@ export const AddItemForm = ({ changeVisibility, storeId }) => {
 
       dispatch({
         type: "AddItem",
-        payload: { item: data.items.slice(-1), storeId },
+        payload: { item: data.item, storeId },
       });
     } catch (err) {
       Toast.show({
