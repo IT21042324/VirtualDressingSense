@@ -39,7 +39,9 @@ export default function Store({ navigation }) {
         <FlatList
           data={items}
           keyExtractor={(item) => item}
-          renderItem={(item) => <ItemCard itemId={item.item} />}
+          renderItem={(item) => (
+            <ItemCard itemId={item.item} storeId={storeId} />
+          )}
         />
       ) : (
         <View style={styles.emptyListView}>
