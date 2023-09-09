@@ -10,12 +10,15 @@ import { useState, useEffect } from "react";
 import { AddStoreModal } from "../../components/storeManagement/modals/addStore";
 import axios from "axios";
 import Toast from "react-native-toast-message";
+import { UseStoreContext } from "../../hooks/useStoreContext";
 
 export default function StoreSelection({ navigation }) {
   const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
   const [selectedStore, setSelectedStore] = useState("");
   const [modalVisibility, setModalVisibility] = useState(false);
   const [storeDataSet, setStoreDataSet] = useState([]);
+
+  const { stores, dispatch } = UseStoreContext();
 
   useEffect(() => {
     const token =
@@ -35,6 +38,7 @@ export default function StoreSelection({ navigation }) {
         );
 
         setStoreDataSet(data);
+        dispatch({ type: "SetStores", payload: data });
       } catch (err) {
         console.log(err);
         Toast.show({
@@ -52,22 +56,25 @@ export default function StoreSelection({ navigation }) {
   };
 
   const navigateToStorePage = () => {
-    navigation.navigate("Store", selectedStore);
+    const relevantStoreList = stores.filter((stor) => {
+      return stor._id === selectedStore._id;
+    });
+
+    relevantStoreList?.length > 0 &&
+      navigation.navigate("Store", relevantStoreList[0]);
   };
 
   return (
     <View style={styles.container}>
-      {storeDataSet?.length <= 7 && (
-        <View style={styles.actionBtnContainer}>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={styles.actionBtn}
-            onPress={() => changeModalVisibility(true)}
-          >
-            <Text style={styles.actionBtnText}>+</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+      <View style={styles.actionBtnContainer}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={styles.actionBtn}
+          onPress={() => changeModalVisibility(true)}
+        >
+          <Text style={styles.actionBtnText}>+</Text>
+        </TouchableOpacity>
+      </View>
 
       {modalVisibility && (
         <AddStoreModal changeModalVisibility={changeModalVisibility} />

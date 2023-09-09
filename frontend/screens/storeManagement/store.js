@@ -8,10 +8,15 @@ import {
 import { ItemCard } from "../../components/storeManagement/ItemCard";
 import { useState } from "react";
 import { AddItemModal } from "../../components/storeManagement/modals/addItem";
+import { UseStoreContext } from "../../hooks/useStoreContext";
 
 export default function Store({ navigation }) {
-  const items = navigation.getParam("items");
+  const { stores } = UseStoreContext();
+
   const storeId = navigation.getParam("_id");
+
+  const items = stores.filter((store) => store._id === storeId)[0]?.items;
+
   const [modalVisibility, setModalVisibility] = useState(false);
 
   const changeModalVisibility = (status) => {
@@ -35,7 +40,7 @@ export default function Store({ navigation }) {
           storeId={storeId}
         />
       )}
-      {items.length !== 0 ? (
+      {items?.length !== 0 ? (
         <FlatList
           data={items}
           keyExtractor={(item) => item}

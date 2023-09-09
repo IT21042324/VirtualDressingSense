@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, ActivityIndicator } from "react-native";
 import { Avatar, Button, Card, Text } from "react-native-paper";
 import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
+import { UseStoreContext } from "../../hooks/useStoreContext";
 
 const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
 
@@ -11,9 +12,10 @@ export const ItemCard = ({ itemId, storeId }) => {
   const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
 
   const [item, setItem] = useState({});
-
   const [showDeleteActivityHandler, setShowDeleteActivityHandler] =
     useState(false);
+
+  const { dispatch, stores } = UseStoreContext();
 
   const onDeletePressHandler = async () => {
     setShowDeleteActivityHandler(true);
@@ -30,11 +32,18 @@ export const ItemCard = ({ itemId, storeId }) => {
           },
         }
       );
+
       Toast.show({
         type: "success",
         text1: "Item Deleted",
       });
-      console.log(data);
+
+      dispatch({
+        type: "RemoveItemFromStore",
+        payload: { itemId, storeId },
+      });
+
+      console.log(stores);
     } catch (err) {
       Toast.show({
         type: "error",

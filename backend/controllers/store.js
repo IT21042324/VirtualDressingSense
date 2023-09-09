@@ -33,7 +33,6 @@ const getAllStores = async (req, res) => {
 };
 
 const addItemToStore = async (req, res) => {
-  //here req.body only contains the item model properties only.
   const { storeId } = req.params;
   const {
     itemName,
@@ -94,9 +93,13 @@ const addItemToStore = async (req, res) => {
         });
 
         if (newItem) {
-          await storeModel.findByIdAndUpdate(storeId, {
-            $push: { items: newItem._id },
-          });
+          await storeModel.findByIdAndUpdate(
+            storeId,
+            {
+              $push: { items: newItem._id },
+            },
+            { new: true }
+          );
           res.status(200).json(newItem);
         }
       } else {
