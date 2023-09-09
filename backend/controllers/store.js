@@ -82,7 +82,7 @@ const addItemToStore = async (req, res) => {
         ? (newBrand = await brandModel.create({
             brandName,
           }))
-        : (newBrand = await brandModel.find({ brandName }));
+        : (newBrand = brand);
 
       if (newBrand) {
         const newItem = await itemModel.create({
