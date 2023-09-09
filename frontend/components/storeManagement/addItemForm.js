@@ -18,8 +18,6 @@ import axios from "axios";
 import Toast from "react-native-toast-message";
 import { ImageUpload } from "./imageUpload";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
-
 const ItemSchema = yup.object({
   brandName: yup.string().required(),
   subType: yup.array().required(),
@@ -139,8 +137,10 @@ export const AddItemForm = ({ changeVisibility, storeId }) => {
     };
 
     try {
+      const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
+
       const { data } = await axios.patch(
-        `${backendUrl}/api/stores/add/item/${storeId}`,
+        `${REACT_APP_BACKEND_URL}/api/stores/add/item/${storeId}`,
         newItem,
         {
           headers: {
@@ -159,6 +159,7 @@ export const AddItemForm = ({ changeVisibility, storeId }) => {
         text1: "Item Creation Failed",
         text2: err.message,
       });
+      console.log(err);
     }
     changeVisibility(false);
   };
@@ -195,7 +196,6 @@ export const AddItemForm = ({ changeVisibility, storeId }) => {
       initialValues={initialValues}
       validationSchema={ItemSchema}
       onSubmit={(values) => {
-        console.log("values");
         onSubmitHandler(values);
       }}
     >

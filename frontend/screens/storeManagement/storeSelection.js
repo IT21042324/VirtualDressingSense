@@ -11,9 +11,8 @@ import { AddStoreModal } from "../../components/storeManagement/modals/addStore"
 import axios from "axios";
 import Toast from "react-native-toast-message";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
-
 export default function StoreSelection({ navigation }) {
+  const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
   const [selectedStore, setSelectedStore] = useState("");
   const [modalVisibility, setModalVisibility] = useState(false);
   const [storeDataSet, setStoreDataSet] = useState([]);
@@ -27,7 +26,7 @@ export default function StoreSelection({ navigation }) {
     async function getDataSet() {
       try {
         const { data } = await axios.get(
-          `${backendUrl}/api/stores/owner/${_id}`,
+          `${REACT_APP_BACKEND_URL}/api/stores/owner/${_id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
