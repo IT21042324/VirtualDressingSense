@@ -138,19 +138,20 @@ const deleteStoreById = async function deleteStoreById(req, res) {
 
 const deleteItemFromStoreUsingStoreId = async (req, res) => {
   const { itemId } = req.body;
+  const { ObjectId } = require("mongoose").Types;
+  itemId = ObjectId(itemId);
 
   try {
     const store = await storeModel.findByIdAndUpdate(
       req.params.id,
       {
-        $pull: { items: itemId },
+        $pull: { items: { $eq: itemId } },
       },
       { new: true }
     );
-    await store.save();
     res.status(200).json(store);
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
     res.status(500).json(err);
   }
 };
