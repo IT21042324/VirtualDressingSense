@@ -30,7 +30,7 @@ const userLogin = async (req, res) => {
 
 const userSignUp = async function (req, res) {
   // Get user details from request body
-  const { userName, password, userType } = req.body;
+  const { userName, password, userType , } = req.body;
 
   try {
     // Create new user using userModel's signup method
@@ -53,7 +53,7 @@ const userSignUp = async function (req, res) {
 
 const createNormalUser = async (userId) => {
   try {
-    await storeOwnerModel.create({ parent: userId });
+    await normalUserModel.create({ parent: userId });
   } catch (err) {
     console.log(err.message);
     res.json({ err: err.message });
@@ -62,7 +62,7 @@ const createNormalUser = async (userId) => {
 
 const createStoreOwner = async (userId) => {
   try {
-    await normalUserModel.create({ parent: userId });
+    await storeOwnerModel.create({ parent: userId });
   } catch (err) {
     console.log(err.message);
     res.json({ err: err.message });

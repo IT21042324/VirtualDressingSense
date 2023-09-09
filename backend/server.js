@@ -10,6 +10,7 @@ const storeRoutes = require("./routes/store");
 const itemRoutes = require("./routes/item");
 const brandRoutes = require("./routes/brand");
 const requireAuth = require("./middleware/requireAuth");
+const recommondationRoutes = require("./routes/algorithm");
 
 //Creating an express app
 const app = express();
@@ -44,3 +45,4 @@ app.use(requireAuth);
 app.use("/api/stores", storeRoutes);
 app.use("/api/items", itemRoutes);
 app.use("/api/brands", brandRoutes);
+app.use("/api/algorithm", recommondationRoutes)

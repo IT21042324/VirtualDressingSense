@@ -21,6 +21,7 @@ const saveItem = async (req, res) => {
 
 const findItemById = async (req, res) => {
   const { id } = req.params;
+  console.log(id);
   try {
     const item = await itemModel.findById(id);
     res.status(200).json(item);

@@ -5,19 +5,32 @@ const itemSchema = new Schema(
   {
     store: {
       type: Array,
-      default: [], //store itemId in here so that we can use populate function when needed
+      default: [], //store storeId in here so that we can use populate function when needed
     },
-    image: String,
+    itemName: {
+      type: String,
+      required: true,
+    },
     brand: {
       type: Schema.Types.ObjectId,
       ref: "Brand",
     },
-    type: {
+    measurementsType: {
       type: String,
+      default: "in",
     },
-    sizes: {
-      type: Array,
+    mainType: {
+      type: "String",
+      default: "top",
     },
+    measurements: Object,
+    image: String,
+    gender: String,
+    category: String, //like children/Teens/Adults
+    type: String,
+    size: String,
+    price: String,
+    color: String,
   },
   { timestamps: true }
 );
