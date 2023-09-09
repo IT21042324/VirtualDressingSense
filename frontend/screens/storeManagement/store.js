@@ -50,7 +50,7 @@ export default function Store({ navigation }) {
           data={items}
           keyExtractor={(item) => item}
           renderItem={(item) => (
-            <ItemCard itemId={item.item} storeId={storeId} />
+            <ItemCard itemId={item.item._id} storeId={storeId} />
           )}
         />
       ) : (

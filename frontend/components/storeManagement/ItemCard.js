@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as React from "react";
-import { FlatList, StyleSheet, ActivityIndicator } from "react-native";
+import { FlatList, StyleSheet, ActivityIndicator, Alert } from "react-native";
 import { Avatar, Button, Card, Text } from "react-native-paper";
 import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
@@ -17,42 +17,56 @@ export const ItemCard = ({ itemId, storeId }) => {
 
   const { dispatch, stores } = UseStoreContext();
 
-  const onDeletePressHandler = async () => {
-    setShowDeleteActivityHandler(true);
-    try {
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Zjc0M2UwNDAzNzQxZDQzNmMxZTZiZSIsImlhdCI6MTY5MzkyNjM2OCwiZXhwIjoxNjk0MTg1NTY4fQ.S5gfmagFa3zWtUlTyMbTpxEum8JfMLg8ufEJC0rRroU";
+  const onDeletePressHandler = () => {
+    Alert.alert("Delete Item", "Are you sure you want to delete this item?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: async () => {
+          setShowDeleteActivityHandler(true);
+          try {
+            const token =
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Zjc0M2UwNDAzNzQxZDQzNmMxZTZiZSIsImlhdCI6MTY5MzkyNjM2OCwiZXhwIjoxNjk0MTg1NTY4fQ.S5gfmagFa3zWtUlTyMbTpxEum8JfMLg8ufEJC0rRroU";
 
-      const { data } = await axios.patch(
-        `${REACT_APP_BACKEND_URL}/api/stores/delete/item/${storeId}`,
-        { itemId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+            const { data } = await axios.patch(
+              `${REACT_APP_BACKEND_URL}/api/stores/delete/item/${storeId}`,
+              { itemId },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
 
-      Toast.show({
-        type: "success",
-        text1: "Item Deleted",
-      });
+            Toast.show({
+              type: "success",
+              text1: "Item Deleted",
+            });
 
-      dispatch({
-        type: "RemoveItemFromStore",
-        payload: { itemId, storeId },
-      });
-    } catch (err) {
-      Toast.show({
-        type: "error",
-        text1: "Unable To Delete Item",
-        text2: err,
-      });
-    }
-    setShowDeleteActivityHandler(false);
+            dispatch({
+              type: "RemoveItemFromStore",
+              payload: { itemId, storeId },
+            });
+          } catch (err) {
+            Toast.show({
+              type: "error",
+              text1: "Unable To Delete Item",
+              text2: err,
+            });
+          }
+          setShowDeleteActivityHandler(false);
+        },
+      },
+    ]);
   };
 
   useEffect(() => {
+    console.log(itemId._id);
+
     const loadItem = async () => {
       try {
         const { data } = await axios.get(
@@ -91,8 +105,6 @@ export const ItemCard = ({ itemId, storeId }) => {
           />
         </Card.Content>
         <Card.Actions>
-          <Button>Edit</Button>
-
           {!showDeleteActivityHandler ? (
             <Button
               style={styles.deleteButtonBackground}
