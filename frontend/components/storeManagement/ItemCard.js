@@ -21,7 +21,7 @@ export const ItemCard = ({ itemId, storeId }) => {
       const token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Zjc0M2UwNDAzNzQxZDQzNmMxZTZiZSIsImlhdCI6MTY5MzkyNjM2OCwiZXhwIjoxNjk0MTg1NTY4fQ.S5gfmagFa3zWtUlTyMbTpxEum8JfMLg8ufEJC0rRroU";
 
-      await axios.patch(
+      const { data } = await axios.patch(
         `${REACT_APP_BACKEND_URL}/api/stores/delete/item/${storeId}`,
         { itemId },
         {
@@ -34,6 +34,7 @@ export const ItemCard = ({ itemId, storeId }) => {
         type: "success",
         text1: "Item Deleted",
       });
+      console.log(data);
     } catch (err) {
       Toast.show({
         type: "error",
