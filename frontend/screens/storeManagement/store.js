@@ -6,7 +6,7 @@ import {
   FlatList,
 } from "react-native";
 import { ItemCard } from "../../components/storeManagement/ItemCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AddItemModal } from "../../components/storeManagement/modals/addItem";
 import { UseStoreContext } from "../../hooks/useStoreContext";
 
@@ -15,7 +15,12 @@ export default function Store({ navigation }) {
 
   const storeId = navigation.getParam("_id");
 
-  const items = stores.filter((store) => store._id === storeId)[0]?.items;
+  const [items, setItems] = useState([]);
+  useEffect(() => {
+    const itemToSet = stores.filter((store) => store._id === storeId)[0]?.items;
+
+    setItems(itemToSet);
+  }, [stores?.items]);
 
   const [modalVisibility, setModalVisibility] = useState(false);
 
