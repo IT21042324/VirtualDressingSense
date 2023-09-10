@@ -2,7 +2,11 @@ import React from "react";
 import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { AddItemForm } from "../addItemForm";
 
-export const AddItemModal = ({ changeModalVisibility, storeId }) => {
+export const AddItemModal = ({
+  changeModalVisibility,
+  storeId,
+  itemUpdationStatus,
+}) => {
   const changeVisibility = () => {
     changeModalVisibility(false);
   };
@@ -20,6 +24,7 @@ export const AddItemModal = ({ changeModalVisibility, storeId }) => {
             <ModalContent
               changeVisibility={changeVisibility}
               storeId={storeId}
+              itemUpdationStatus={itemUpdationStatus}
             />
           </View>
         </View>
@@ -28,11 +33,15 @@ export const AddItemModal = ({ changeModalVisibility, storeId }) => {
   );
 };
 
-const ModalContent = ({ changeVisibility, storeId }) => {
+const ModalContent = ({ changeVisibility, storeId, itemUpdationStatus }) => {
   return (
     <View style={styles.content}>
       <Text style={styles.title}>Add Item</Text>
-      <AddItemForm changeVisibility={changeVisibility} storeId={storeId} />
+      <AddItemForm
+        changeVisibility={changeVisibility}
+        storeId={storeId}
+        itemUpdationStatus={itemUpdationStatus}
+      />
       <Pressable style={styles.buttonClose} onPress={changeVisibility}>
         <Text style={styles.textStyle}>Close</Text>
       </Pressable>

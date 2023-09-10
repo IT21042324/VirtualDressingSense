@@ -2,11 +2,14 @@ import React from "react";
 import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { AddStoreForm } from "../addStoreForm";
 
-const ModalContent = ({ changeVisibility }) => {
+const ModalContent = ({ changeVisibility, storeUpdateStatus }) => {
   return (
     <View style={styles.content}>
       <Text style={styles.title}>Add Store</Text>
-      <AddStoreForm changeVisibility={changeVisibility} />
+      <AddStoreForm
+        changeVisibility={changeVisibility}
+        storeUpdateStatus={storeUpdateStatus}
+      />
       <Pressable style={styles.buttonClose} onPress={changeVisibility}>
         <Text style={styles.textStyle}>Close</Text>
       </Pressable>
@@ -14,7 +17,11 @@ const ModalContent = ({ changeVisibility }) => {
   );
 };
 
-export const AddStoreModal = ({ changeModalVisibility, storeId }) => {
+export const AddStoreModal = ({
+  changeModalVisibility,
+  storeId,
+  storeUpdateStatus,
+}) => {
   const changeVisibility = () => {
     changeModalVisibility(false);
   };
@@ -32,6 +39,7 @@ export const AddStoreModal = ({ changeModalVisibility, storeId }) => {
             <ModalContent
               changeVisibility={changeVisibility}
               storeId={storeId}
+              storeUpdateStatus={storeUpdateStatus}
             />
           </View>
         </View>

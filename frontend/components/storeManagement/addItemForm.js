@@ -56,7 +56,11 @@ const initialValues = {
   bodyShape: "endomorph",
 };
 
-export const AddItemForm = ({ changeVisibility, storeId }) => {
+export const AddItemForm = ({
+  changeVisibility,
+  storeId,
+  itemUpdationStatus,
+}) => {
   const {
     sizeSelectionOption,
     genderSelectionOptions,
@@ -161,6 +165,7 @@ export const AddItemForm = ({ changeVisibility, storeId }) => {
         type: "AddItem",
         payload: { item: data.item, storeId },
       });
+      itemUpdationStatus(true);
     } catch (err) {
       Toast.show({
         type: "error",
@@ -168,6 +173,7 @@ export const AddItemForm = ({ changeVisibility, storeId }) => {
         text2: err.message,
       });
       console.log(err);
+      itemUpdationStatus(false);
     }
     changeVisibility(false);
   };

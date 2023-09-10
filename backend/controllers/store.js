@@ -205,7 +205,7 @@ const updateBasicStoreDetails = async (req, res) => {
     });
     res.status(200).json(store);
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
     res.status(500).json(err);
   }
 };

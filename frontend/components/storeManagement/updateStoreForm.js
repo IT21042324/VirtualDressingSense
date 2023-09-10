@@ -20,8 +20,8 @@ const StoreSchema = yup.object({
 
 export const UpdateStoreForm = ({
   changeVisibility,
-  storeId,
   storeDetails,
+  storeUpdateStatus,
 }) => {
   const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
   const token =
@@ -32,8 +32,8 @@ export const UpdateStoreForm = ({
   const onSubmitHandler = async (values) => {
     try {
       setShowActivityIndicator(true);
-      const { data } = await axios.post(
-        `${REACT_APP_BACKEND_URL}/api/stores/basic/${storeId}`,
+      const { data } = await axios.patch(
+        `${REACT_APP_BACKEND_URL}/api/stores/basic/${storeDetails?._id}`,
         values,
         {
           headers: {
@@ -46,7 +46,10 @@ export const UpdateStoreForm = ({
         type: "success",
         text1: "Store Updated Successfully",
       });
+
+      storeUpdateStatus(true);
     } catch (err) {
+      console.log(err);
       Toast.show({
         type: "error",
         text1: "Store Update Not Received",
@@ -54,6 +57,7 @@ export const UpdateStoreForm = ({
       });
     }
     changeVisibility(false);
+    storeUpdateStatus(false);
   };
   return (
     <Formik
