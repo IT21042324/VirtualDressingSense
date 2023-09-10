@@ -42,6 +42,8 @@ export default function StoreSelection({ navigation }) {
         text1: "Successfully deleted store",
         text2: data,
       });
+
+      setIsStoreListUpdated(true);
     } catch (err) {
       console.log(err);
       Toast.show({
@@ -51,6 +53,8 @@ export default function StoreSelection({ navigation }) {
       });
     }
   };
+
+  const [isStoreListUpdated, setIsStoreListUpdated] = useState(false);
 
   useEffect(() => {
     const token =
@@ -71,6 +75,7 @@ export default function StoreSelection({ navigation }) {
 
         setStoreDataSet(data);
         dispatch({ type: "SetStores", payload: data });
+        setIsStoreListUpdated(false);
       } catch (err) {
         console.log(err);
         Toast.show({
@@ -81,7 +86,11 @@ export default function StoreSelection({ navigation }) {
       }
     }
     getDataSet();
-  }, []);
+  }, [isStoreListUpdated]);
+
+  const storeUpdateStatus = () => {
+    setIsStoreListUpdated(true);
+  };
 
   const changeModalVisibility = (status) => {
     setModalVisibility(status);
@@ -113,13 +122,17 @@ export default function StoreSelection({ navigation }) {
       </View>
 
       {modalVisibility && (
-        <AddStoreModal changeModalVisibility={changeModalVisibility} />
+        <AddStoreModal
+          changeModalVisibility={changeModalVisibility}
+          storeUpdateStatus={storeUpdateStatus}
+        />
       )}
 
       {updateVisibility && (
         <UpdateStoreModal
           changeModalVisibility={updateModalVisibility}
           storeDetails={storeDataSet[0]}
+          storeUpdateStatus={storeUpdateStatus}
         />
       )}
 

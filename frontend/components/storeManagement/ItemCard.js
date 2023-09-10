@@ -15,6 +15,8 @@ export const ItemCard = ({ itemId, storeId }) => {
   const [showDeleteActivityHandler, setShowDeleteActivityHandler] =
     useState(false);
 
+  console.log(storeId);
+
   const { dispatch, stores } = UseStoreContext();
 
   const onDeletePressHandler = () => {
@@ -65,8 +67,6 @@ export const ItemCard = ({ itemId, storeId }) => {
   };
 
   useEffect(() => {
-    console.log(itemId._id);
-
     const loadItem = async () => {
       try {
         const { data } = await axios.get(

@@ -12,21 +12,29 @@ import { UseStoreContext } from "../../hooks/useStoreContext";
 
 export default function Store({ navigation }) {
   const { stores } = UseStoreContext();
+  const [isItemsUpdated, setIsItemUpdated] = useState(false);
 
   const storeId = navigation.getParam("_id");
 
   const [items, setItems] = useState([]);
+
   useEffect(() => {
     const itemToSet = stores.filter((store) => store._id === storeId)[0]?.items;
 
     setItems(itemToSet);
-  }, [stores?.items]);
+  }, []);
 
   const [modalVisibility, setModalVisibility] = useState(false);
 
   const changeModalVisibility = (status) => {
     setModalVisibility(status);
   };
+
+  const itemUpdationStatus = (status) => {
+    setIsItemUpdated(status);
+  };
+
+  console.log(items, storeId);
 
   return (
     <View style={styles.container}>
@@ -43,14 +51,15 @@ export default function Store({ navigation }) {
         <AddItemModal
           changeModalVisibility={changeModalVisibility}
           storeId={storeId}
+          itemUpdationStatus={itemUpdationStatus}
         />
       )}
       {items?.length !== 0 ? (
         <FlatList
           data={items}
           keyExtractor={(item) => item}
-          renderItem={(item) => (
-            <ItemCard itemId={item.item._id} storeId={storeId} />
+          renderItem={({ item }) => (
+            <ItemCard itemId={item} storeId={storeId} />
           )}
         />
       ) : (

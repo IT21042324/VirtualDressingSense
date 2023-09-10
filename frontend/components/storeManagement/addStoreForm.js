@@ -19,7 +19,7 @@ const StoreSchema = yup.object({
   owner: yup.string().required(),
 });
 
-export const AddStoreForm = ({ changeVisibility }) => {
+export const AddStoreForm = ({ changeVisibility, storeUpdateStatus }) => {
   const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
 
   const token =
@@ -44,6 +44,8 @@ export const AddStoreForm = ({ changeVisibility }) => {
         type: "success",
         text1: "Store Registered Successfully",
       });
+
+      storeUpdateStatus(true);
     } catch (err) {
       Toast.show({
         type: "error",
