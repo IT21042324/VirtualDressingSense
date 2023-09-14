@@ -24,6 +24,12 @@ export default function StoreSelection({ navigation }) {
   const { stores, dispatch } = UseStoreContext();
 
   const [showOptions, setShowOptions] = useState(false);
+  const [storeDataToUpdate, setUpdateStoreData] = useState({});
+
+  const setStoreDataToUpdate = (storeData) => {
+    setUpdateStoreData(storeData);
+    console.log(storeData);
+  };
 
   const deleteStoreHandler = async (_id) => {
     const token =
@@ -131,7 +137,7 @@ export default function StoreSelection({ navigation }) {
       {updateVisibility && (
         <UpdateStoreModal
           changeModalVisibility={updateModalVisibility}
-          storeDetails={storeDataSet[0]}
+          storeDetails={storeDataToUpdate}
           storeUpdateStatus={storeUpdateStatus}
         />
       )}
@@ -152,6 +158,7 @@ export default function StoreSelection({ navigation }) {
                 activeOpacity={1}
                 onPress={() => {
                   setSelectedStore(item);
+                  setStoreDataToUpdate(item);
                 }}
               >
                 <View

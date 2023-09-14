@@ -22,7 +22,9 @@ export default function Store({ navigation }) {
     const itemToSet = stores.filter((store) => store._id === storeId)[0]?.items;
 
     setItems(itemToSet);
-  }, []);
+  }, [isItemsUpdated]);
+
+  console.log(items);
 
   const [modalVisibility, setModalVisibility] = useState(false);
 
@@ -33,8 +35,6 @@ export default function Store({ navigation }) {
   const itemUpdationStatus = (status) => {
     setIsItemUpdated(status);
   };
-
-  console.log(items, storeId);
 
   return (
     <View style={styles.container}>
@@ -59,7 +59,11 @@ export default function Store({ navigation }) {
           data={items}
           keyExtractor={(item) => item}
           renderItem={({ item }) => (
-            <ItemCard itemId={item} storeId={storeId} />
+            <ItemCard
+              itemId={item}
+              storeId={storeId}
+              itemUpdationStatus={itemUpdationStatus}
+            />
           )}
         />
       ) : (

@@ -8,14 +8,12 @@ import { UseStoreContext } from "../../hooks/useStoreContext";
 
 const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
 
-export const ItemCard = ({ itemId, storeId }) => {
+export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
   const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
 
   const [item, setItem] = useState({});
   const [showDeleteActivityHandler, setShowDeleteActivityHandler] =
     useState(false);
-
-  console.log(storeId);
 
   const { dispatch, stores } = UseStoreContext();
 
@@ -49,16 +47,23 @@ export const ItemCard = ({ itemId, storeId }) => {
               text1: "Item Deleted",
             });
 
+            console.log("withoutarray", itemId, storeId);
+
             dispatch({
               type: "RemoveItemFromStore",
               payload: { itemId, storeId },
             });
+
+            console.log("from item card page", stores);
+
+            itemUpdationStatus(true);
           } catch (err) {
             Toast.show({
               type: "error",
               text1: "Unable To Delete Item",
               text2: err,
             });
+            itemUpdationStatus(false);
           }
           setShowDeleteActivityHandler(false);
         },

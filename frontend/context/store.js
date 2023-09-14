@@ -21,7 +21,7 @@ export const StoreContextProvider = (props) => {
               return {
                 ...store,
                 items: store.items.filter(
-                  (item) => item._id !== action.payload.itemId
+                  (item) => item !== action.payload.itemId
                 ),
               };
             } else {
