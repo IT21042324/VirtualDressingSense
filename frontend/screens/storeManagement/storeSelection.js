@@ -12,6 +12,7 @@ import { UpdateStoreModal } from "../../components/storeManagement/modals/update
 import axios from "axios";
 import Toast from "react-native-toast-message";
 import { UseStoreContext } from "../../hooks/useStoreContext";
+import { ActivityIndicator, TouchableRipple } from "react-native-paper";
 
 export default function StoreSelection({ navigation }) {
   const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
@@ -61,6 +62,9 @@ export default function StoreSelection({ navigation }) {
   };
 
   const [isStoreListUpdated, setIsStoreListUpdated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  console.log(isLoading);
 
   useEffect(() => {
     const token =
@@ -82,6 +86,7 @@ export default function StoreSelection({ navigation }) {
         setStoreDataSet(data);
         dispatch({ type: "SetStores", payload: data });
         setIsStoreListUpdated(false);
+        setIsLoading(false);
       } catch (err) {
         console.log(err);
         Toast.show({
@@ -89,6 +94,7 @@ export default function StoreSelection({ navigation }) {
           text1: "Unable to fetch data",
           text2: err,
         });
+        setIsLoading(false);
       }
     }
     getDataSet();
@@ -142,9 +148,23 @@ export default function StoreSelection({ navigation }) {
         />
       )}
 
-      {storeDataSet?.length === 0 && (
+      {storeDataSet?.length === 0 && !isLoading && (
         <View style={styles.emptyStoreListContainer}>
           <Text style={styles.emptyStoreListText}>No Stores To Display</Text>
+        </View>
+      )}
+
+      {isLoading && (
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            position: "relative",
+            height: "80%",
+          }}
+        >
+          <ActivityIndicator size="large" color={"dodgerblue"} />
+          <Text style={{ padding: 20, fontSize: 20 }}>Loading...</Text>
         </View>
       )}
 
@@ -154,8 +174,7 @@ export default function StoreSelection({ navigation }) {
         renderItem={({ item }) => {
           return (
             <>
-              <TouchableOpacity
-                activeOpacity={1}
+              <TouchableRipple
                 onPress={() => {
                   setSelectedStore(item);
                   setStoreDataToUpdate(item);
@@ -172,26 +191,28 @@ export default function StoreSelection({ navigation }) {
                     },
                   ]}
                 >
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "flex-end",
-                      marginRight: 10,
-                    }}
-                    onPress={() => {
-                      setShowOptions(!showOptions);
-                    }}
-                  >
-                    <Text
+                  {selectedStore?.storeName === item.storeName && (
+                    <TouchableOpacity
                       style={{
-                        color: "white",
-                        fontWeight: "bold",
-                        marginBottom: 10,
+                        flexDirection: "row",
+                        justifyContent: "flex-end",
+                        marginRight: 10,
+                      }}
+                      onPress={() => {
+                        setShowOptions(!showOptions);
                       }}
                     >
-                      {showOptions ? "Hide Options" : "Show Options"}
-                    </Text>
-                  </TouchableOpacity>
+                      <Text
+                        style={{
+                          color: "white",
+                          fontWeight: "bold",
+                          marginBottom: 10,
+                        }}
+                      >
+                        {showOptions ? "Hide Options" : "Show Options"}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
 
                   <Text style={styles.storeName} numberOfLines={1}>
                     {item.storeName}
@@ -233,7 +254,7 @@ export default function StoreSelection({ navigation }) {
                     </View>
                   )}
                 </View>
-              </TouchableOpacity>
+              </TouchableRipple>
             </>
           );
         }}

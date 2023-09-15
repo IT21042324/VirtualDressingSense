@@ -93,7 +93,7 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
     <>
       <Card>
         <Card.Title
-          title={item.itemName}
+          title={`Name : ${item.itemName}`}
           subtitle={item.brandName}
           left={LeftContent}
         />

@@ -77,12 +77,12 @@ export const AddItemForm = ({
     setSelectedGender(gender);
   };
 
+  const { dispatch, stores } = UseStoreContext();
+
   const [selectedCategory, setSelectedCategory] = useState("");
   const categorySelectionHandler = (category) => {
     setSelectedCategory(category);
   };
-
-  categorySelectionHandler;
 
   const [selectedSize, setSelectedSize] = useState("");
   const sizeSelectionHandler = (size) => {
@@ -111,8 +111,6 @@ export const AddItemForm = ({
   const setImage = (image) => {
     setSelectedImage(image);
   };
-
-  const { stores, dispatch } = UseStoreContext();
 
   const onSubmitHandler = async (values) => {
     setShowActivityIndicator(true);
@@ -165,6 +163,7 @@ export const AddItemForm = ({
         type: "AddItem",
         payload: { item: data.item, storeId },
       });
+
       itemUpdationStatus(true);
     } catch (err) {
       Toast.show({
