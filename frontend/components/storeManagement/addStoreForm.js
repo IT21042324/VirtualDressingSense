@@ -45,7 +45,7 @@ export const AddStoreForm = ({ changeVisibility, storeUpdateStatus }) => {
         text1: "Store Registered Successfully",
       });
 
-      storeUpdateStatus(true);
+      storeUpdateStatus();
     } catch (err) {
       Toast.show({
         type: "error",

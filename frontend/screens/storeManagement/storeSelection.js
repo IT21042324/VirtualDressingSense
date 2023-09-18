@@ -3,97 +3,48 @@ import {
   View,
   StyleSheet,
   Text,
-  Button,
   TouchableOpacity,
 } from "react-native";
+import { Button } from "react-native-rapi-ui";
 import { useState, useEffect } from "react";
 import { AddStoreModal } from "../../components/storeManagement/modals/addStore";
 import { UpdateStoreModal } from "../../components/storeManagement/modals/updateStore";
-import axios from "axios";
 import Toast from "react-native-toast-message";
 import { UseStoreContext } from "../../hooks/useStoreContext";
-import { ActivityIndicator, TouchableRipple } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
+import { StoreCard } from "../../components/storeManagement/storeCard";
+import { getAllStoresForAnOwner } from "../../services/api";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function StoreSelection({ navigation }) {
-  const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
-  const [selectedStore, setSelectedStore] = useState("");
   const [modalVisibility, setModalVisibility] = useState(false);
   const [updateVisibility, setUpdateModalVisibility] = useState(false);
 
   const [storeDataSet, setStoreDataSet] = useState([]);
 
-  const { stores, dispatch } = UseStoreContext();
+  const { dispatch } = UseStoreContext();
 
-  const [showOptions, setShowOptions] = useState(false);
-  const [storeDataToUpdate, setUpdateStoreData] = useState({});
-
-  const setStoreDataToUpdate = (storeData) => {
-    setUpdateStoreData(storeData);
-    console.log(storeData);
-  };
-
-  const deleteStoreHandler = async (_id) => {
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Zjc0M2UwNDAzNzQxZDQzNmMxZTZiZSIsImlhdCI6MTY5MzkyNjM2OCwiZXhwIjoxNjk0MTg1NTY4fQ.S5gfmagFa3zWtUlTyMbTpxEum8JfMLg8ufEJC0rRroU";
-    try {
-      const { data } = await axios.delete(
-        `${REACT_APP_BACKEND_URL}/api/stores/delete/${_id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      Toast.show({
-        type: "success",
-        text1: "Successfully deleted store",
-        text2: data,
-      });
-
-      setIsStoreListUpdated(true);
-    } catch (err) {
-      console.log(err);
-      Toast.show({
-        type: "error",
-        text1: "Unable to delete data",
-        text2: err,
-      });
-    }
-  };
+  const [selectedStore, setSelectedStore] = useState({});
 
   const [isStoreListUpdated, setIsStoreListUpdated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  console.log(isLoading);
-
   useEffect(() => {
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Zjc0M2UwNDAzNzQxZDQzNmMxZTZiZSIsImlhdCI6MTY5MzkyNjM2OCwiZXhwIjoxNjk0MTg1NTY4fQ.S5gfmagFa3zWtUlTyMbTpxEum8JfMLg8ufEJC0rRroU";
-
-    const _id = "64f8754e1cd2fd7cda7d8725";
-
     async function getDataSet() {
-      try {
-        const { data } = await axios.get(
-          `${REACT_APP_BACKEND_URL}/api/stores/owner/${_id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+      const { data } = await getAllStoresForAnOwner();
 
+      if (data?.length >= 0) {
         setStoreDataSet(data);
         dispatch({ type: "SetStores", payload: data });
         setIsStoreListUpdated(false);
         setIsLoading(false);
-      } catch (err) {
-        console.log(err);
+      } else {
         Toast.show({
           type: "error",
           text1: "Unable to fetch data",
           text2: err,
         });
+
         setIsLoading(false);
       }
     }
@@ -113,12 +64,11 @@ export default function StoreSelection({ navigation }) {
   };
 
   const navigateToStorePage = () => {
-    const relevantStoreList = stores.filter((stor) => {
-      return stor._id === selectedStore._id;
-    });
+    navigation.navigate("Store", selectedStore);
+  };
 
-    relevantStoreList?.length > 0 &&
-      navigation.navigate("Store", relevantStoreList[0]);
+  const setStoreToNavigate = (store) => {
+    setSelectedStore(store);
   };
 
   return (
@@ -132,28 +82,24 @@ export default function StoreSelection({ navigation }) {
           <Text style={styles.actionBtnText}>+</Text>
         </TouchableOpacity>
       </View>
-
       {modalVisibility && (
         <AddStoreModal
           changeModalVisibility={changeModalVisibility}
           storeUpdateStatus={storeUpdateStatus}
         />
       )}
-
       {updateVisibility && (
         <UpdateStoreModal
           changeModalVisibility={updateModalVisibility}
-          storeDetails={storeDataToUpdate}
+          storeDetails={selectedStore}
           storeUpdateStatus={storeUpdateStatus}
         />
       )}
-
       {storeDataSet?.length === 0 && !isLoading && (
         <View style={styles.emptyStoreListContainer}>
           <Text style={styles.emptyStoreListText}>No Stores To Display</Text>
         </View>
       )}
-
       {isLoading && (
         <View
           style={{
@@ -167,103 +113,31 @@ export default function StoreSelection({ navigation }) {
           <Text style={{ padding: 20, fontSize: 20 }}>Loading...</Text>
         </View>
       )}
-
       <FlatList
         keyExtractor={(item) => item._id}
         data={storeDataSet}
-        renderItem={({ item }) => {
-          return (
-            <>
-              <TouchableRipple
-                onPress={() => {
-                  setSelectedStore(item);
-                  setStoreDataToUpdate(item);
-                }}
-              >
-                <View
-                  style={[
-                    styles.item,
-                    {
-                      backgroundColor:
-                        selectedStore?.storeName === item.storeName
-                          ? "dodgerblue"
-                          : "grey",
-                    },
-                  ]}
-                >
-                  {selectedStore?.storeName === item.storeName && (
-                    <TouchableOpacity
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "flex-end",
-                        marginRight: 10,
-                      }}
-                      onPress={() => {
-                        setShowOptions(!showOptions);
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: "white",
-                          fontWeight: "bold",
-                          marginBottom: 10,
-                        }}
-                      >
-                        {showOptions ? "Hide Options" : "Show Options"}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-
-                  <Text style={styles.storeName} numberOfLines={1}>
-                    {item.storeName}
-                  </Text>
-                  <Text style={styles.location}>{item.address}</Text>
-
-                  {showOptions && (
-                    <View
-                      style={{
-                        justifyContent: "space-around",
-                        marginRight: 10,
-                        marginTop: 40,
-                        fontWeight: "bold",
-                        flexDirection: "row",
-                      }}
-                    >
-                      <Button
-                        title="Update Store"
-                        color={"purple"}
-                        backgroundColor="white"
-                        onPress={() => updateModalVisibility(true)}
-                        disabled={
-                          selectedStore?.storeName === item.storeName
-                            ? false
-                            : true
-                        }
-                      />
-                      <Button
-                        title="Delete Store"
-                        color={"red"}
-                        backgroundColor="red"
-                        onPress={() => deleteStoreHandler(item._id)}
-                        disabled={
-                          selectedStore?.storeName === item.storeName
-                            ? false
-                            : true
-                        }
-                      />
-                    </View>
-                  )}
-                </View>
-              </TouchableRipple>
-            </>
-          );
-        }}
+        renderItem={({ item }) => (
+          <StoreCard
+            store={item}
+            selectedStore={selectedStore}
+            setStoreToNavigate={setStoreToNavigate}
+            updateModalVisibility={updateModalVisibility}
+            storeUpdateStatus={storeUpdateStatus}
+          />
+        )}
       />
+
       {storeDataSet?.length > 0 && (
         <View style={styles.proceedButton}>
           <Button
-            title="Proceed"
-            disabled={!selectedStore}
+            text="Continue"
+            color={"orange"}
+            status="primary"
+            disabled={Object.keys(selectedStore)?.length === 0}
+            style={{ borderRadius: 10000 }}
+            textStyle={{ color: "white", fontWeight: "bold", fontSize: 18 }}
+            rightContent={<Ionicons name="arrow-forward" size={20} />}
+            type="TouchableOpacity"
             onPress={navigateToStorePage}
           />
         </View>
@@ -278,37 +152,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: "#fff",
   },
-  item: {
-    flex: 1,
-    marginTop: 5,
-    marginBottom: 10,
-    paddingTop: 5,
-    paddingBottom: 15,
-    paddingLeft: 5,
-    fontSize: 24,
-  },
-  storeName: {
-    fontSize: 30,
-    fontWeight: "bold",
-    margin: 5,
-    color: "white",
-  },
-  location: {
-    fontSize: 20,
-    color: "white",
-    marginLeft: 5,
-  },
   proceedButton: {
-    marginBottom: 40,
+    marginBottom: 20,
     flexDirection: "row",
     justifyContent: "flex-end",
   },
-
   actionBtn: {
     alignItems: "center",
     width: 70,
     height: 70,
-    backgroundColor: "dodgerblue",
+    backgroundColor: "orange",
     borderRadius: 100,
   },
   actionBtnContainer: {

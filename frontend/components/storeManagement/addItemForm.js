@@ -107,6 +107,7 @@ export const AddItemForm = ({
   };
 
   const [selectedImage, setSelectedImage] = useState("");
+  console.log(selectedStore);
 
   const setImage = (image) => {
     setSelectedImage(image);
