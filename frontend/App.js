@@ -25,8 +25,8 @@ export default function App() {
     return <Home />;
   } else {
     return (
-      <RapiLayout>
-        <SafeAreaView style={globalStyles.container}>
+      <SafeAreaView style={globalStyles.container}>
+        <RapiLayout>
           <StoreContextProvider>
             <MenuProvider>
               <ThemeProvider>
@@ -35,8 +35,8 @@ export default function App() {
               </ThemeProvider>
             </MenuProvider>
           </StoreContextProvider>
-        </SafeAreaView>
-      </RapiLayout>
+        </RapiLayout>
+      </SafeAreaView>
     );
   }
 }
