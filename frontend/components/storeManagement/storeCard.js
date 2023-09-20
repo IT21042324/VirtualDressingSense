@@ -1,9 +1,7 @@
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { Button } from "react-native-rapi-ui";
 import Toast from "react-native-toast-message";
 import { deleteStoreById } from "../../services/api";
 import { StoreCardMenu } from "../menus/customStoreCardMenu";
-import { useState } from "react";
 
 export const StoreCard = ({
   store,
@@ -43,7 +41,9 @@ export const StoreCard = ({
           styles.store,
           {
             backgroundColor:
-              selectedStore?.storeName === store.storeName ? "orange" : "grey",
+              selectedStore?.storeName === store.storeName
+                ? "dodgerblue"
+                : "grey",
           },
         ]}
       >

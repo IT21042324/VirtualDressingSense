@@ -27,12 +27,6 @@ const ItemSchema = yup.object({
   itemName: yup.string().required(),
   gender: yup.string().required(),
   category: yup.string().required(),
-  measurementType: yup.string().required(),
-  armLength: yup.number().required(),
-  backWidth: yup.number().required(),
-  neckCircumference: yup.number().required(),
-  chestHeight: yup.number().required(),
-  bustHeight: yup.number().required(),
   image: yup.string().required(),
 });
 
@@ -45,7 +39,6 @@ const initialValues = {
   image: "",
   size: "",
   gender: "",
-  measurementType: "in",
   category: "teens",
   chestHeight: 0,
   bodyShape: "",
@@ -66,7 +59,6 @@ export const AddItemForm = ({
     genderSelectionOptions,
     typeSelectionOption,
     mainTypeSelectionOption,
-    measurementTypeSelectionOption,
     categorySelectionOption,
   } = GlobalConstants;
 
@@ -84,16 +76,6 @@ export const AddItemForm = ({
     setSelectedCategory(category);
   };
 
-  const [selectedSize, setSelectedSize] = useState("");
-  const sizeSelectionHandler = (size) => {
-    setSelectedSize(size);
-  };
-
-  const [selectedMeasurementType, setSelectedMeasurementType] = useState("in");
-  const measurementTypeSelectionHandler = (type) => {
-    setSelectedMeasurementType(type);
-  };
-
   const [selectedType, setSelectedType] = useState([]);
 
   const typeSelectionHandler = (subType) => {
@@ -107,7 +89,6 @@ export const AddItemForm = ({
   };
 
   const [selectedImage, setSelectedImage] = useState("");
-  console.log(selectedStore);
 
   const setImage = (image) => {
     setSelectedImage(image);
@@ -118,15 +99,6 @@ export const AddItemForm = ({
 
     const token =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Zjc0M2UwNDAzNzQxZDQzNmMxZTZiZSIsImlhdCI6MTY5MzkyNjM2OCwiZXhwIjoxNjk0MTg1NTY4fQ.S5gfmagFa3zWtUlTyMbTpxEum8JfMLg8ufEJC0rRroU";
-    const measurements = [
-      {
-        backWidth: values.backWidth,
-        bustHeight: values.bustHeight,
-        chestHeight: values.chestHeight,
-        neckCircumference: values.neckCircumference,
-        bodyShape: values.bodyShape,
-      },
-    ];
 
     const newItem = {
       brandName: values.brandName,
@@ -135,8 +107,6 @@ export const AddItemForm = ({
       image: values.image,
       itemName: values.itemName,
       mainType: values.mainType,
-      measurements: measurements,
-      measurementType: values.measurementType,
       size: values.size,
       subType: values.subType,
       image: values.image,
@@ -296,84 +266,6 @@ export const AddItemForm = ({
             <Text style={globalStyles.errorText}>
               {props.touched["size"] && props.errors["size"]}
             </Text>
-
-            <DropDown
-              data={measurementTypeSelectionOption}
-              searchBoolean={false}
-              onSelectFunction={measurementTypeSelectionHandler}
-              placeholder="Measurement Type"
-            />
-            <Text style={globalStyles.errorText}>
-              {props.touched["measurementType"] &&
-                props.errors["measurementType"]}
-            </Text>
-
-            <TextInput
-              style={styles.textInput}
-              placeholder="Arm Length"
-              onChangeText={props.handleChange("armLength")}
-              value={props.values["armLength"]}
-              onBlur={props.handleBlur("armLength")}
-              keyboardType="numeric"
-            />
-            <Text style={globalStyles.errorText}>
-              {props.touched["armLength"] && props.errors["armLength"]}
-            </Text>
-
-            <TextInput
-              style={styles.textInput}
-              placeholder="Back Width"
-              onChangeText={props.handleChange("backWidth")}
-              value={props.values["backWidth"]}
-              onBlur={props.handleBlur("backWidth")}
-              keyboardType="numeric"
-            />
-            <Text style={globalStyles.errorText}>
-              {props.touched["backWidth"] && props.errors["backWidth"]}
-            </Text>
-
-            <TextInput
-              style={styles.textInput}
-              placeholder="Neck Circumference"
-              onChangeText={props.handleChange("neckCircumference")}
-              value={props.values["neckCircumference"]}
-              onBlur={props.handleBlur("neckCircumference")}
-              keyboardType="numeric"
-            />
-            <Text style={globalStyles.errorText}>
-              {props.touched["neckCircumference"] &&
-                props.errors["neckCircumference"]}
-            </Text>
-
-            {selectedGender.toLocaleLowerCase() !== "male" ? (
-              <>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Bust Height"
-                  onChangeText={props.handleChange("bustHeight")}
-                  value={props.values["bustHeight"]}
-                  onBlur={props.handleBlur("bustHeight")}
-                  keyboardType="numeric"
-                />
-                <Text style={globalStyles.errorText}>
-                  {props.touched["bustHeight"] && props.errors["bustHeight"]}
-                </Text>
-              </>
-            ) : (
-              <>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Chest Height"
-                  onChangeText={props.handleChange("chestHeight")}
-                  value={props.values["chestHeight"]}
-                  onBlur={props.handleBlur("chestHeight")}
-                  keyboardType="numeric"
-                />
-                <Text style={globalStyles.errorText}>
-                  {props.touched["chestHeight"] && props.errors["chestHeight"]}
-                </Text>
-              </>
-            )}
 
             <View style={{ marginTop: 20 }}>
               {!showActivityIndicator ? (

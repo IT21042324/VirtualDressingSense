@@ -131,7 +131,7 @@ export default function StoreSelection({ navigation }) {
         <View style={styles.proceedButton}>
           <Button
             text="Continue"
-            color={"orange"}
+            color={"dodgerblue"}
             status="primary"
             disabled={Object.keys(selectedStore)?.length === 0}
             style={{ borderRadius: 10000 }}
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 70,
     height: 70,
-    backgroundColor: "orange",
+    backgroundColor: "dodgerblue",
     borderRadius: 100,
   },
   actionBtnContainer: {
