@@ -21,7 +21,6 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
     Alert.alert("Delete Item", "Are you sure you want to delete this item?", [
       {
         text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
         style: "cancel",
       },
       {
@@ -42,21 +41,17 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
               }
             );
 
-            Toast.show({
-              type: "success",
-              text1: "Item Deleted",
-            });
-
-            console.log("withoutarray", itemId, storeId);
-
             dispatch({
               type: "RemoveItemFromStore",
               payload: { itemId, storeId },
             });
 
-            console.log("from item card page", stores);
-
             itemUpdationStatus(true);
+
+            Toast.show({
+              type: "success",
+              text1: "Item Deleted",
+            });
           } catch (err) {
             Toast.show({
               type: "error",
@@ -91,16 +86,19 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
 
   return (
     <>
-      <Card>
+      <Card style={styles.cardContiner}>
         <Card.Title
-          title={`Name : ${item.itemName}`}
-          subtitle={item.brandName}
+          title={`Name: ${item.itemName}`}
+          subtitle={`Brand: ${item.brandName}`}
           left={LeftContent}
         />
         <Card.Cover source={{ uri: "data:image/jpeg;base64," + item.image }} />
 
         <Card.Content>
-          <Text variant="titleLarge">{`Gender : ${item.gender}`}</Text>
+          <Text
+            variant="titleMedium"
+            style={{ marginTop: 20 }}
+          >{`Gender: ${item.gender}`}</Text>
           <FlatList
             data={item.subType}
             keyExtractor={(item) => item}
@@ -127,6 +125,7 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
 };
 
 const styles = StyleSheet.create({
-  deleteButtonBackground: { backgroundColor: "red" },
+  deleteButtonBackground: { backgroundColor: "red", borderColor: "red" },
   deleteBtnTextFormat: { fontWeight: "bold", color: "white" },
+  cardContiner: { margin: 10 },
 });

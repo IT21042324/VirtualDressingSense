@@ -14,10 +14,9 @@ import { UseStoreContext } from "../../hooks/useStoreContext";
 import { ActivityIndicator } from "react-native-paper";
 import { StoreCard } from "../../components/storeManagement/storeCard";
 import { getAllStoresForAnOwner } from "../../services/api";
-import { Ionicons } from "@expo/vector-icons";
+import { UseHelperContext } from "../../hooks/useHelperContextProvider";
 
 export default function StoreSelection({ navigation }) {
-  const [modalVisibility, setModalVisibility] = useState(false);
   const [updateVisibility, setUpdateModalVisibility] = useState(false);
 
   const [storeDataSet, setStoreDataSet] = useState([]);
@@ -42,7 +41,6 @@ export default function StoreSelection({ navigation }) {
         Toast.show({
           type: "error",
           text1: "Unable to fetch data",
-          text2: err,
         });
 
         setIsLoading(false);
@@ -55,8 +53,16 @@ export default function StoreSelection({ navigation }) {
     setIsStoreListUpdated(true);
   };
 
+  const { helperContext } = UseHelperContext();
+  const helperDispath = UseHelperContext().dispatch;
+
+  const { showAddStoreForm } = helperContext;
+
   const changeModalVisibility = (status) => {
-    setModalVisibility(status);
+    helperDispath({
+      type: "showAddStoreFormStatus",
+      status,
+    });
   };
 
   const updateModalVisibility = (status) => {
@@ -73,16 +79,7 @@ export default function StoreSelection({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.actionBtnContainer}>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.actionBtn}
-          onPress={() => changeModalVisibility(true)}
-        >
-          <Text style={styles.actionBtnText}>+</Text>
-        </TouchableOpacity>
-      </View>
-      {modalVisibility && (
+      {showAddStoreForm && (
         <AddStoreModal
           changeModalVisibility={changeModalVisibility}
           storeUpdateStatus={storeUpdateStatus}
@@ -114,7 +111,7 @@ export default function StoreSelection({ navigation }) {
         </View>
       )}
       <FlatList
-        keyExtractor={(item) => item._id}
+        keyExtractor={(store) => store._id}
         data={storeDataSet}
         renderItem={({ item }) => (
           <StoreCard
@@ -136,7 +133,6 @@ export default function StoreSelection({ navigation }) {
             disabled={Object.keys(selectedStore)?.length === 0}
             style={{ borderRadius: 10000 }}
             textStyle={{ color: "white", fontWeight: "bold", fontSize: 18 }}
-            rightContent={<Ionicons name="arrow-forward" size={20} />}
             type="TouchableOpacity"
             onPress={navigateToStorePage}
           />
@@ -163,17 +159,6 @@ const styles = StyleSheet.create({
     height: 70,
     backgroundColor: "dodgerblue",
     borderRadius: 100,
-  },
-  actionBtnContainer: {
-    zIndex: 100,
-    position: "absolute",
-    top: 450,
-    right: 5,
-  },
-  actionBtnText: {
-    color: "white",
-    fontSize: 50,
-    fontWeight: "bold",
   },
   emptyStoreListContainer: {
     flex: 1,

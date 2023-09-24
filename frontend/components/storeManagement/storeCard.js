@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import Toast from "react-native-toast-message";
 import { deleteStoreById } from "../../services/api";
 import { StoreCardMenu } from "../menus/customStoreCardMenu";

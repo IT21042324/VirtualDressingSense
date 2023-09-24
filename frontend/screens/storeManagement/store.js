@@ -1,14 +1,9 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  FlatList,
-} from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import { ItemCard } from "../../components/storeManagement/ItemCard";
 import { useEffect, useState } from "react";
 import { AddItemModal } from "../../components/storeManagement/modals/addItem";
 import { UseStoreContext } from "../../hooks/useStoreContext";
+import { UseHelperContext } from "../../hooks/useHelperContextProvider";
 
 export default function Store({ navigation }) {
   const { stores } = UseStoreContext();
@@ -22,14 +17,21 @@ export default function Store({ navigation }) {
     const itemToSet = stores.filter((store) => store._id === storeId)[0]?.items;
 
     setItems(itemToSet);
+
+    console.log(itemToSet);
+
+    setIsItemUpdated(false);
   }, [isItemsUpdated]);
 
-  console.log(items);
+  const { helperContext, dispatch } = UseHelperContext();
 
-  const [modalVisibility, setModalVisibility] = useState(false);
+  const { showAddItemForm } = helperContext;
 
   const changeModalVisibility = (status) => {
-    setModalVisibility(status);
+    dispatch({
+      type: "showAddItemFormStatus",
+      status,
+    });
   };
 
   const itemUpdationStatus = (status) => {
@@ -38,16 +40,7 @@ export default function Store({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={{ zIndex: 100 }}>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.actionBtn}
-          onPress={() => changeModalVisibility(true)}
-        >
-          <Text style={styles.floatingBtnInline}>+</Text>
-        </TouchableOpacity>
-      </View>
-      {modalVisibility && (
+      {showAddItemForm && (
         <AddItemModal
           changeModalVisibility={changeModalVisibility}
           storeId={storeId}
@@ -57,7 +50,7 @@ export default function Store({ navigation }) {
       {items?.length !== 0 ? (
         <FlatList
           data={items}
-          keyExtractor={(item) => item}
+          keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <ItemCard
               itemId={item}
@@ -77,17 +70,6 @@ export default function Store({ navigation }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 10, backgroundColor: "#fff" },
-  actionBtn: {
-    alignItems: "center",
-    width: 70,
-    position: "absolute",
-    top: 450,
-    right: 5,
-    height: 70,
-    backgroundColor: "dodgerblue",
-    borderRadius: 100,
-  },
-  floatingBtnInline: { color: "white", fontSize: 50, fontWeight: "bold" },
   emptyListView: {
     flex: 1,
     flexDirection: "row",

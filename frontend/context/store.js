@@ -14,6 +14,16 @@ export const StoreContextProvider = (props) => {
         return { stores: [action.payload, ...state.stores] };
       case "SetStores":
         return { stores: action.payload };
+      case "ReplaceStore":
+        return {
+          stores: state.stores.map((store) => {
+            if (store._id === action.payload.store._id) {
+              return action.payload.store;
+            } else {
+              return store;
+            }
+          }),
+        };
       case "RemoveItemFromStore":
         return {
           stores: state.stores.map((store) => {
@@ -35,7 +45,7 @@ export const StoreContextProvider = (props) => {
             if (store._id === action.payload.storeId) {
               return {
                 ...store,
-                items: [...store.items, action.payload.item],
+                items: [...store.items, action.payload.itemId],
               };
             } else {
               return store;

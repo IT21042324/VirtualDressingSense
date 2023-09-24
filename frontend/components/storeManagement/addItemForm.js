@@ -14,10 +14,11 @@ import { DropDown } from "../dropDownPicker";
 import { globalStyles } from "../../styles/global";
 import GlobalConstants from "../globalConstants";
 import { MultiSelectionDropDown } from "../multipleSelectionList";
-import axios from "axios";
 import Toast from "react-native-toast-message";
 import { ImageUpload } from "./imageUpload";
 import { UseStoreContext } from "../../hooks/useStoreContext";
+import { createNewItem } from "../../services/api";
+import { debounce } from "lodash";
 
 const ItemSchema = yup.object({
   brandName: yup.string().required(),
@@ -40,13 +41,6 @@ const initialValues = {
   size: "",
   gender: "",
   category: "teens",
-  chestHeight: 0,
-  bodyShape: "",
-  armLength: 0,
-  backWidth: 0,
-  neckCircumference: 0,
-  bustHeight: 0,
-  bodyShape: "endomorph",
 };
 
 export const AddItemForm = ({
@@ -62,6 +56,10 @@ export const AddItemForm = ({
     categorySelectionOption,
   } = GlobalConstants;
 
+  const debouncedTypeSelectionHandler = () => {
+    debounce(typeSelectionHandler, 300);
+  };
+
   const [showActivityIndicator, setShowActivityIndicator] = useState(false);
 
   const [selectedGender, setSelectedGender] = useState("male");
@@ -70,6 +68,11 @@ export const AddItemForm = ({
   };
 
   const { dispatch, stores } = UseStoreContext();
+
+  const [selectedSize, setSelectedSize] = useState("");
+  const sizeSelectionHandler = (size) => {
+    setSelectedSize(size);
+  };
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const categorySelectionHandler = (category) => {
@@ -97,34 +100,9 @@ export const AddItemForm = ({
   const onSubmitHandler = async (values) => {
     setShowActivityIndicator(true);
 
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Zjc0M2UwNDAzNzQxZDQzNmMxZTZiZSIsImlhdCI6MTY5MzkyNjM2OCwiZXhwIjoxNjk0MTg1NTY4fQ.S5gfmagFa3zWtUlTyMbTpxEum8JfMLg8ufEJC0rRroU";
+    const { data } = await createNewItem({ storeId, ...values });
 
-    const newItem = {
-      brandName: values.brandName,
-      category: values.category,
-      gender: values.gender,
-      image: values.image,
-      itemName: values.itemName,
-      mainType: values.mainType,
-      size: values.size,
-      subType: values.subType,
-      image: values.image,
-    };
-
-    try {
-      const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
-
-      const { data } = await axios.patch(
-        `${REACT_APP_BACKEND_URL}/api/stores/add/item/${storeId}`,
-        newItem,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+    if (data) {
       Toast.show({
         type: "success",
         text1: "Item Creation Successfully",
@@ -132,18 +110,19 @@ export const AddItemForm = ({
 
       dispatch({
         type: "AddItem",
-        payload: { item: data.item, storeId },
+        payload: { itemId: data.item._id, storeId },
       });
 
       itemUpdationStatus(true);
-    } catch (err) {
+      setShowActivityIndicator(false);
+    } else {
       Toast.show({
         type: "error",
         text1: "Item Creation Failed",
-        text2: err.message,
       });
-      console.log(err);
+
       itemUpdationStatus(false);
+      setShowActivityIndicator(false);
     }
     changeVisibility(false);
   };
@@ -159,10 +138,6 @@ export const AddItemForm = ({
       formikRef.current.setFieldValue("subType", selectedType);
       formikRef.current.setFieldValue("mainType", selectedMainType);
       formikRef.current.setFieldValue("image", selectedImage);
-      formikRef.current.setFieldValue(
-        "measurementType",
-        selectedMeasurementType
-      );
     }
   }, [
     storeId,
@@ -171,7 +146,6 @@ export const AddItemForm = ({
     selectedType,
     selectedCategory,
     selectedMainType,
-    selectedMeasurementType,
     selectedImage,
   ]);
 
@@ -232,7 +206,7 @@ export const AddItemForm = ({
               placeholder="Select Category"
             />
             <Text style={globalStyles.errorText}>
-              {props.touched["gender"] && props.errors["gender"]}
+              {props.touched["category"] && props.errors["category"]}
             </Text>
 
             <DropDown
@@ -249,7 +223,7 @@ export const AddItemForm = ({
               data={typeSelectionOption}
               searchBoolean={true}
               label={"Selected Sub Types"}
-              onSelectFunction={typeSelectionHandler}
+              onSelectFunction={debouncedTypeSelectionHandler}
               placeholder="Select Sub Type"
             />
 

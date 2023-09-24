@@ -5,7 +5,8 @@ import {
   MenuOption,
   MenuTrigger,
 } from "react-native-popup-menu";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { SimpleLineIcons } from "@expo/vector-icons";
+import { StyleSheet } from "react-native";
 
 export const StoreCardMenu = ({
   deleteStoreHandler,
@@ -32,43 +33,62 @@ export const StoreCardMenu = ({
 
   return (
     <View>
-      <Menu
-        style={{
-          flex: 1,
-          justifyContent: "space-between",
-          flexDirection: "row",
-        }}
-      >
+      <Menu style={styles.menuContainer}>
         <Image
           source={require("../../assets/adaptive-icon.png")}
-          style={{ height: 40, width: 40, tintColor: "white" }}
+          style={styles.selectionImage}
         />
         <MenuTrigger>
-          <Ionicons name="md-checkmark-circle" size={32} color="green" />
+          <SimpleLineIcons name="options-vertical" size={22} color="white" />
         </MenuTrigger>
+
         <MenuOptions>
-          <MenuOption
-            onSelect={() => updateModalVisibility(true)}
-            style={{
-              backgroundColor: "#e0e4f3",
-              padding: 10,
-            }}
-          >
-            <Text style={{ color: "black", fontWeight: "bold" }}>Update</Text>
-          </MenuOption>
-          <MenuOption
-            onSelect={handleDelete}
-            style={{
-              backgroundColor: "#e0e4f3",
-              padding: 10,
-              borderTopWidth: 1,
-              borderTopColor: "white",
-            }}
-          >
-            <Text style={{ color: "black", fontWeight: "bold" }}>Delete</Text>
-          </MenuOption>
+          <View style={styles.menuOptionsContainer}>
+            <MenuOption
+              onSelect={() => updateModalVisibility(true)}
+              style={styles.menuOptionUpdate}
+            >
+              <Text style={styles.menuOptionText}>Update</Text>
+            </MenuOption>
+            <MenuOption onSelect={handleDelete} style={styles.menuOptionDelete}>
+              <Text style={styles.menuOptionText}>Delete</Text>
+            </MenuOption>
+          </View>
         </MenuOptions>
       </Menu>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  menuOptionsContainer: {
+    width: "100%",
+    position: "absolute",
+    top: 30,
+    right: 10,
+  },
+  menuContainer: {
+    flex: 1,
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+  menuOptionUpdate: {
+    backgroundColor: "#e0e4f3",
+    padding: 10,
+  },
+  menuOptionText: {
+    color: "black",
+    fontWeight: "bold",
+  },
+  menuOptionDelete: {
+    backgroundColor: "#e0e4f3",
+    padding: 10,
+    borderTopWidth: 1,
+    borderTopColor: "white",
+  },
+  selectionImage: {
+    height: 40,
+    width: 40,
+    tintColor: "white",
+  },
+});

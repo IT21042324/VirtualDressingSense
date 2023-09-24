@@ -19,11 +19,6 @@ export const getAllStoresForAnOwner = async function () {
 
     return { data };
   } catch (err) {
-    Toast.show({
-      type: "error",
-      text1: "Unable to fetch data",
-      text2: err,
-    });
     return { err };
   }
 };
@@ -41,6 +36,27 @@ export const deleteStoreById = async (_id) => {
 
     return { data };
   } catch (err) {
+    return { err };
+  }
+};
+
+export const createNewItem = async (values) => {
+  console.log(values.storeId, values.itemName);
+
+  try {
+    const { data } = await axios.patch(
+      `${REACT_APP_BACKEND_URL}/api/stores/add/item/${values.storeId}`,
+      values,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(data);
+    return { data };
+  } catch (err) {
+    console.log(err);
     return { err };
   }
 };
