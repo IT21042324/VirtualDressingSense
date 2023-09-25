@@ -1,16 +1,14 @@
-import axios from "axios";
 import * as React from "react";
 import { FlatList, StyleSheet, ActivityIndicator, Alert } from "react-native";
 import { Avatar, Button, Card, Text } from "react-native-paper";
 import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
 import { UseStoreContext } from "../../hooks/useStoreContext";
+import { deleteItemFromStore, loadItemForItemCard } from "../../services/api";
 
 const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
 
 export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
-  const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
-
   const [item, setItem] = useState({});
   const [showDeleteActivityHandler, setShowDeleteActivityHandler] =
     useState(false);
@@ -27,20 +25,10 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
         text: "OK",
         onPress: async () => {
           setShowDeleteActivityHandler(true);
-          try {
-            const token =
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Zjc0M2UwNDAzNzQxZDQzNmMxZTZiZSIsImlhdCI6MTY5MzkyNjM2OCwiZXhwIjoxNjk0MTg1NTY4fQ.S5gfmagFa3zWtUlTyMbTpxEum8JfMLg8ufEJC0rRroU";
 
-            const { data } = await axios.patch(
-              `${REACT_APP_BACKEND_URL}/api/stores/delete/item/${storeId}`,
-              { itemId },
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
+          const response = await deleteItemFromStore(storeId, itemId);
 
+          if (response.data) {
             dispatch({
               type: "RemoveItemFromStore",
               payload: { itemId, storeId },
@@ -52,14 +40,14 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
               type: "success",
               text1: "Item Deleted",
             });
-          } catch (err) {
+          } else {
             Toast.show({
               type: "error",
               text1: "Unable To Delete Item",
-              text2: err,
             });
             itemUpdationStatus(false);
           }
+
           setShowDeleteActivityHandler(false);
         },
       },
@@ -68,18 +56,8 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
 
   useEffect(() => {
     const loadItem = async () => {
-      try {
-        const { data } = await axios.get(
-          `${REACT_APP_BACKEND_URL}/api/items/${itemId}`
-        );
-        const brandData = await axios.get(
-          `${REACT_APP_BACKEND_URL}/api/brands/${data.brand}`
-        );
-
-        setItem({ ...data, brandName: brandData.data.brandName });
-      } catch (err) {
-        console.error(err.message);
-      }
+      const res = await loadItemForItemCard(itemId);
+      setItem(res);
     };
     loadItem();
   }, []);

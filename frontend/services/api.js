@@ -60,3 +60,52 @@ export const createNewItem = async (values) => {
     return { err };
   }
 };
+
+export const deleteItemFromStore = async (storeId, itemId) => {
+  try {
+    const { data } = await axios.patch(
+      `${REACT_APP_BACKEND_URL}/api/stores/delete/item/${storeId}`,
+      { itemId },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return { data };
+  } catch (err) {
+    console.error(err);
+    return { err };
+  }
+};
+
+export const loadItemForItemCard = async (itemId) => {
+  const { data } = await findItemById(itemId);
+  const brandData = await findBrandById(data.brand);
+
+  return { ...data, brandName: brandData.data.brandName };
+};
+
+const findItemById = async (itemId) => {
+  try {
+    const { data } = await axios.get(
+      `${REACT_APP_BACKEND_URL}/api/items/${itemId}`
+    );
+
+    return { data };
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const findBrandById = async (brand) => {
+  try {
+    const { data } = await axios.get(
+      `${REACT_APP_BACKEND_URL}/api/brands/${brand}`
+    );
+    return { data };
+  } catch (err) {
+    console.error(err);
+  }
+};
