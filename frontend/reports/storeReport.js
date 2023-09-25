@@ -8,15 +8,15 @@ export const generateReportForStoresWithUserId = async (stores) => {
 
   return { numberOfStores, storeDetails };
 };
-const generateStoreDetails = async (data) => {
+const generateStoreDetails = async (stores) => {
   const storeDetails = [];
 
-  for (let store of data) {
+  for (let store of stores) {
     let numberOfItemsInEachStore = store.items.length || 0;
     let featuredBrandsId = [];
     for (let item of store.items) {
-      const { data: itemData } = await findItemById(item.$oid); // get the item details by id
-      featuredBrandsId.push(itemData.brand); // get the brand id from the item object
+      const { data: itemData } = await findItemById(item);
+      featuredBrandsId.push(itemData.brand);
     }
 
     const featuredBrands = await Promise.all(

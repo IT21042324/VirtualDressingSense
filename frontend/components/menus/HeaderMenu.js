@@ -28,9 +28,7 @@ export const HeaderMenuOptions = ({ title }) => {
       ? dispatch({ type: "showAddStoreFormStatus", status: true })
       : dispatch({ type: "showAddItemFormStatus", status: true });
   };
-
   const { stores } = UseStoreContext();
-
   const onReportSelectHandler = async () => {
     await CreateReport(stores);
   };
