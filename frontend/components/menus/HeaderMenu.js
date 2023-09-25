@@ -10,6 +10,7 @@ import { StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import { UseHelperContext } from "../../hooks/useHelperContextProvider";
 import { CreateReport } from "../storeManagement/createReport";
+import { UseStoreContext } from "../../hooks/useStoreContext";
 
 export const HeaderMenuOptions = ({ title }) => {
   const { dispatch } = UseHelperContext();
@@ -28,8 +29,10 @@ export const HeaderMenuOptions = ({ title }) => {
       : dispatch({ type: "showAddItemFormStatus", status: true });
   };
 
+  const { stores } = UseStoreContext();
+
   const onReportSelectHandler = async () => {
-    await CreateReport();
+    await CreateReport(stores);
   };
 
   return (

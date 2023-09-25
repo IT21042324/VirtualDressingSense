@@ -87,10 +87,15 @@ export const loadItemForItemCard = async (itemId) => {
   return { ...data, brandName: brandData.data.brandName };
 };
 
-const findItemById = async (itemId) => {
+export const findItemById = async (itemId) => {
   try {
     const { data } = await axios.get(
-      `${REACT_APP_BACKEND_URL}/api/items/${itemId}`
+      `${REACT_APP_BACKEND_URL}/api/items/${itemId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
 
     return { data };
@@ -99,10 +104,15 @@ const findItemById = async (itemId) => {
   }
 };
 
-const findBrandById = async (brand) => {
+export const findBrandById = async (brand) => {
   try {
     const { data } = await axios.get(
-      `${REACT_APP_BACKEND_URL}/api/brands/${brand}`
+      `${REACT_APP_BACKEND_URL}/api/brands/${brand}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     return { data };
   } catch (err) {

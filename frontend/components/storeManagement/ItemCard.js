@@ -13,7 +13,7 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
   const [showDeleteActivityHandler, setShowDeleteActivityHandler] =
     useState(false);
 
-  const { dispatch, stores } = UseStoreContext();
+  const { dispatch } = UseStoreContext();
 
   const onDeletePressHandler = () => {
     Alert.alert("Delete Item", "Are you sure you want to delete this item?", [
@@ -75,8 +75,13 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
         <Card.Content>
           <Text
             variant="titleMedium"
-            style={{ marginTop: 20 }}
+            style={{ marginTop: 20, fontWeight: "normal" }}
           >{`Gender: ${item.gender}`}</Text>
+
+          <Text
+            variant="titleMedium"
+            style={{ fontWeight: "normal" }}
+          >{`Price: $${item.price}`}</Text>
           <FlatList
             data={item.subType}
             keyExtractor={(item) => item}

@@ -26,6 +26,7 @@ const ItemSchema = yup.object({
   mainType: yup.string().required(),
   size: yup.string().required(),
   itemName: yup.string().required(),
+  price: yup.number().required(),
   gender: yup.string().required(),
   category: yup.string().required(),
   image: yup.string().required(),
@@ -35,6 +36,7 @@ const initialValues = {
   store: "",
   brandName: "",
   itemName: "",
+  price: 0,
   subType: [],
   mainType: "",
   image: "",
@@ -187,6 +189,18 @@ export const AddItemForm = ({
             />
             <Text style={globalStyles.errorText}>
               {props.touched["brandName"] && props.errors["brandName"]}
+            </Text>
+
+            <TextInput
+              style={styles.textInput}
+              placeholder="Price"
+              onChangeText={props.handleChange("price")}
+              value={props.values["price"]}
+              onBlur={props.handleBlur("price")}
+              keyboardType="phone-pad"
+            />
+            <Text style={globalStyles.errorText}>
+              {props.touched["price"] && props.errors["price"]}
             </Text>
 
             <DropDown
