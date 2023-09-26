@@ -1,11 +1,4 @@
-import {
-  FlatList,
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { FlatList, View, StyleSheet, Text } from "react-native";
 import { Button } from "react-native-rapi-ui";
 import { useState, useEffect } from "react";
 import { AddStoreModal } from "../../components/storeManagement/modals/addStore";
@@ -16,7 +9,6 @@ import { ActivityIndicator } from "react-native-paper";
 import { StoreCard } from "../../components/storeManagement/storeCard";
 import { getAllStoresForAnOwner } from "../../services/api";
 import { UseHelperContext } from "../../hooks/useHelperContextProvider";
-import { NearbyJobCard } from "../../components/storeManagement/storeCardRedesigned";
 
 export default function StoreSelection({ navigation }) {
   const [updateVisibility, setUpdateModalVisibility] = useState(false);
