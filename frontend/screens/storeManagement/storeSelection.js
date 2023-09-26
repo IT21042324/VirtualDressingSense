@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { Button } from "react-native-rapi-ui";
 import { useState, useEffect } from "react";
@@ -15,6 +16,7 @@ import { ActivityIndicator } from "react-native-paper";
 import { StoreCard } from "../../components/storeManagement/storeCard";
 import { getAllStoresForAnOwner } from "../../services/api";
 import { UseHelperContext } from "../../hooks/useHelperContextProvider";
+import { NearbyJobCard } from "../../components/storeManagement/storeCardRedesigned";
 
 export default function StoreSelection({ navigation }) {
   const [updateVisibility, setUpdateModalVisibility] = useState(false);
@@ -110,11 +112,13 @@ export default function StoreSelection({ navigation }) {
           <Text style={{ padding: 20, fontSize: 20 }}>Loading...</Text>
         </View>
       )}
+
       <FlatList
         keyExtractor={(store) => store._id}
         data={storeDataSet}
         renderItem={({ item }) => (
           <StoreCard
+            key={item}
             store={item}
             selectedStore={selectedStore}
             setStoreToNavigate={setStoreToNavigate}
