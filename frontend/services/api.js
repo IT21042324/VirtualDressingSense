@@ -41,8 +41,6 @@ export const deleteStoreById = async (_id) => {
 };
 
 export const createNewItem = async (values) => {
-  console.log(values.storeId, values.itemName);
-
   try {
     const { data } = await axios.patch(
       `${REACT_APP_BACKEND_URL}/api/stores/add/item/${values.storeId}`,
@@ -53,7 +51,6 @@ export const createNewItem = async (values) => {
         },
       }
     );
-    console.log(data);
     return { data };
   } catch (err) {
     console.log(err);

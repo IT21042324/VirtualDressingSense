@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { AddItemForm } from "../addItemForm";
+import { colorVariants } from "../../../global/string";
 
 export const AddItemModal = ({
   changeModalVisibility,
@@ -36,7 +37,6 @@ export const AddItemModal = ({
 const ModalContent = ({ changeVisibility, storeId, itemUpdationStatus }) => {
   return (
     <View style={styles.content}>
-      <Text style={styles.title}>Add Item</Text>
       <AddItemForm
         changeVisibility={changeVisibility}
         storeId={storeId}
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     marginTop: 5,
-    backgroundColor: "red",
+    backgroundColor: colorVariants.red,
     padding: 10,
     elevation: 2,
     width: "100%",
@@ -94,11 +94,5 @@ const styles = StyleSheet.create({
   content: {
     width: "100%",
     justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "dodgerblue",
-    textAlign: "center",
   },
 });

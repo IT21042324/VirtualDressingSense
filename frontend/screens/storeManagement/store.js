@@ -50,7 +50,7 @@ export default function Store({ navigation }) {
       {items?.length !== 0 ? (
         <FlatList
           data={items}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => item}
           renderItem={({ item }) => (
             <ItemCard
               itemId={item}

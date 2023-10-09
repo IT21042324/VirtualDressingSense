@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
 import { UseStoreContext } from "../../hooks/useStoreContext";
 import { deleteItemFromStore, loadItemForItemCard } from "../../services/api";
+import { colorVariants, fontFamily, fontStyle } from "../../global/string";
 
 const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
 
@@ -68,6 +69,9 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
         <Card.Title
           title={`Name: ${item.itemName}`}
           subtitle={`Brand: ${item.brandName}`}
+          style={{
+            fontFamily: fontFamily.titleText,
+          }}
           left={LeftContent}
         />
         <Card.Cover source={{ uri: "data:image/jpeg;base64," + item.image }} />
@@ -75,18 +79,35 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
         <Card.Content>
           <Text
             variant="titleMedium"
-            style={{ marginTop: 20, fontWeight: "normal" }}
+            style={{
+              marginTop: 20,
+              fontWeight: "normal",
+              fontStyle: fontFamily.subTitleText,
+            }}
           >{`Gender: ${item.gender}`}</Text>
 
           <Text
             variant="titleMedium"
-            style={{ fontWeight: "normal" }}
+            style={{
+              fontWeight: "normal",
+              fontFamily: fontFamily.subTitleText,
+            }}
           >{`Price: $${item.price}`}</Text>
           <FlatList
             data={item.subType}
             keyExtractor={(item) => item}
+            style={{
+              marginTop: 20,
+            }}
             renderItem={(item) => {
-              return <Text variant="bodyMedium">{`#${item.item}`}</Text>;
+              return (
+                <Text
+                  variant="bodyMedium"
+                  style={{
+                    fontFamily: fontFamily.subTitleText,
+                  }}
+                >{`#${item.item}`}</Text>
+              );
             }}
           />
         </Card.Content>
@@ -108,7 +129,14 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
 };
 
 const styles = StyleSheet.create({
-  deleteButtonBackground: { backgroundColor: "red", borderColor: "red" },
-  deleteBtnTextFormat: { fontWeight: "bold", color: "white" },
+  deleteButtonBackground: {
+    backgroundColor: "red",
+    borderColor: colorVariants.crimson,
+  },
+  deleteBtnTextFormat: {
+    fontWeight: "bold",
+    color: "white",
+    fontStyle: fontStyle.normal,
+  },
   cardContiner: { margin: 10 },
 });

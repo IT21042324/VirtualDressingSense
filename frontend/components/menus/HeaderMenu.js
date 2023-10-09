@@ -46,9 +46,7 @@ export const HeaderMenuOptions = ({ title }) => {
               onSelect={onSelectHandler}
               style={styles.menuOptionUpdate}
             >
-              <Text style={styles.menuOptionText}>
-                Add New {newComponentLabel}
-              </Text>
+              <Text style={styles.menuOptionText}>Add {newComponentLabel}</Text>
             </MenuOption>
             {newComponentLabel === "Item" && (
               <MenuOption

@@ -1,4 +1,4 @@
-import { Image, Text, View, Alert } from "react-native";
+import { Text, View, Alert } from "react-native";
 import {
   Menu,
   MenuOptions,
@@ -34,14 +34,9 @@ export const StoreCardMenu = ({
   return (
     <View>
       <Menu style={styles.menuContainer}>
-        <Image
-          source={require("../../assets/adaptive-icon.png")}
-          style={styles.selectionImage}
-        />
         <MenuTrigger>
           <SimpleLineIcons name="options-vertical" size={22} color="white" />
         </MenuTrigger>
-
         <MenuOptions>
           <View style={styles.menuOptionsContainer}>
             <MenuOption
@@ -69,9 +64,10 @@ const styles = StyleSheet.create({
   },
   menuContainer: {
     flex: 1,
-    justifyContent: "space-between",
     flexDirection: "row",
+    justifyContent: "flex-end",
   },
+
   menuOptionUpdate: {
     backgroundColor: "#e0e4f3",
     padding: 10,

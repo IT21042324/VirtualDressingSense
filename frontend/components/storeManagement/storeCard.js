@@ -2,6 +2,7 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import Toast from "react-native-toast-message";
 import { deleteStoreById } from "../../services/api";
 import { StoreCardMenu } from "../menus/customStoreCardMenu";
+import { colorVariants } from "../../global/string";
 
 export const StoreCard = ({
   store,
@@ -43,7 +44,7 @@ export const StoreCard = ({
             backgroundColor:
               selectedStore?.storeName === store.storeName
                 ? "dodgerblue"
-                : "grey",
+                : colorVariants.babyBlue,
           },
         ]}
       >
@@ -72,7 +73,7 @@ export const StoreCard = ({
 
 const styles = StyleSheet.create({
   store: {
-    marginTop: 10,
+    margin: 10,
     padding: 10,
     paddingBottom: 30,
     borderRadius: 10,
