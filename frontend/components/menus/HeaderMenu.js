@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Alert, Text, View } from "react-native";
 import {
   Menu,
   MenuOptions,
@@ -30,7 +30,16 @@ export const HeaderMenuOptions = ({ title }) => {
   };
   const { stores } = UseStoreContext();
   const onReportSelectHandler = async () => {
-    await CreateReport(stores);
+    Alert.alert("Prepare Report?", "This might take some time to complete", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: async () => await CreateReport(stores),
+      },
+    ]);
   };
 
   return (
@@ -48,7 +57,7 @@ export const HeaderMenuOptions = ({ title }) => {
             >
               <Text style={styles.menuOptionText}>Add {newComponentLabel}</Text>
             </MenuOption>
-            {newComponentLabel === "Item" && (
+            {newComponentLabel === "Store" && (
               <MenuOption
                 onSelect={onReportSelectHandler}
                 style={styles.menuOptionUpdate}
