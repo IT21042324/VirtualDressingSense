@@ -7,7 +7,7 @@ import { UseStoreContext } from "../../hooks/useStoreContext";
 import { deleteItemFromStore, loadItemForItemCard } from "../../services/api";
 import { colorVariants, fontFamily, fontStyle } from "../../global/string";
 
-const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
+const LeftContent = (props) => <Avatar.Icon {...props} icon="tshirt-crew" />;
 
 export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
   const [item, setItem] = useState({});
@@ -65,7 +65,12 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
 
   return (
     <>
-      <Card style={styles.cardContiner}>
+      <Card
+        style={styles.cardContiner}
+        elevated
+        elevation={5}
+        theme={{ colors: { primary: "green" } }}
+      >
         <Card.Title
           title={`Name: ${item.itemName}`}
           subtitle={`Brand: ${item.brandName}`}
