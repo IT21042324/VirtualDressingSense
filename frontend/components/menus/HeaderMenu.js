@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { UseHelperContext } from "../../hooks/useHelperContextProvider";
 import { CreateReport } from "../storeManagement/createReport";
 import { UseStoreContext } from "../../hooks/useStoreContext";
+import { colorVariants } from "../../global/string";
 
 export const HeaderMenuOptions = ({ title }) => {
   const { dispatch } = UseHelperContext();
@@ -51,16 +52,13 @@ export const HeaderMenuOptions = ({ title }) => {
 
         <MenuOptions>
           <View style={styles.menuOptionsContainer}>
-            <MenuOption
-              onSelect={onSelectHandler}
-              style={styles.menuOptionUpdate}
-            >
+            <MenuOption onSelect={onSelectHandler} style={styles.menuOption}>
               <Text style={styles.menuOptionText}>Add {newComponentLabel}</Text>
             </MenuOption>
             {newComponentLabel === "Store" && (
               <MenuOption
                 onSelect={onReportSelectHandler}
-                style={styles.menuOptionUpdate}
+                style={styles.menuOption}
               >
                 <Text style={styles.menuOptionText}>Report</Text>
               </MenuOption>
@@ -84,19 +82,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
   },
-  menuOptionUpdate: {
+  menuOption: {
     backgroundColor: "#e0e4f3",
-    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: colorVariants.babyBlue,
+    padding: 20,
   },
   menuOptionText: {
     color: "black",
     fontWeight: "bold",
-  },
-  menuOptionDelete: {
-    backgroundColor: "#e0e4f3",
-    padding: 10,
-    borderTopWidth: 1,
-    borderTopColor: "white",
   },
   selectionImage: {
     height: 40,
