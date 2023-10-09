@@ -12,6 +12,7 @@ const GlobalConstants = {
     { key: "6", value: "XL" },
     { key: "7", value: "XXL" },
   ],
+
   typeSelectionOption: [
     { key: "1", value: "Formal" },
     { key: "2", value: "Casual" },

@@ -19,7 +19,6 @@ import Toast from "react-native-toast-message";
 import { ImageUpload } from "./imageUpload";
 import { UseStoreContext } from "../../hooks/useStoreContext";
 import { createNewItem } from "../../services/api";
-import { debounce } from "lodash";
 import { colorVariants, fontFamily, fontWeight } from "../../global/string";
 import { FocusableTextInput } from "./modals/focusableTextInput";
 
@@ -33,6 +32,7 @@ const ItemSchema = yup.object({
   gender: yup.string().required("Gender is required"),
   category: yup.string().required("Category is required"),
   image: yup.string().required("Image is required"),
+  color: yup.string().required("Color is required"),
 });
 
 const initialValues = {
@@ -46,6 +46,7 @@ const initialValues = {
   size: "",
   gender: "",
   category: "teens",
+  color: "",
 };
 
 export const AddItemForm = ({
@@ -239,6 +240,16 @@ export const AddItemForm = ({
 
               <Text style={globalStyles.errorText}>
                 {props.touched["price"] && props.errors["price"]}
+              </Text>
+
+              <FocusableTextInput
+                field="color"
+                placeholder="Item Color"
+                form={props}
+              />
+
+              <Text style={globalStyles.errorText}>
+                {props.touched["color"] && props.errors["color"]}
               </Text>
 
               <DropDown
