@@ -47,12 +47,14 @@ export default function Store({ navigation }) {
           itemUpdationStatus={itemUpdationStatus}
         />
       )}
+
       {items?.length !== 0 ? (
         <FlatList
           data={items}
           keyExtractor={(item) => item}
           renderItem={({ item }) => (
             <ItemCard
+              key={item}
               itemId={item}
               storeId={storeId}
               itemUpdationStatus={itemUpdationStatus}
