@@ -82,7 +82,7 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
             style={{
               marginTop: 20,
               fontWeight: "normal",
-              fontStyle: fontFamily.subTitleText,
+              fontFamily: fontFamily.subTitleText,
             }}
           >{`Gender: ${item.gender}`}</Text>
 
