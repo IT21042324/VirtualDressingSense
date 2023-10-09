@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { UpdateStoreForm } from "../updateStoreForm";
+import { colorVariants } from "../../../global/string";
 
 const ModalContent = ({
   changeVisibility,
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     marginTop: 15,
-    backgroundColor: "red",
+    backgroundColor: colorVariants.crimson,
     padding: 10,
     elevation: 2,
     width: "100%",

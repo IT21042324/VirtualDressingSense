@@ -7,6 +7,7 @@ import {
   TextInput,
   Text,
   StyleSheet,
+  TouchableOpacity,
 } from "react-native";
 import { useRef, useState, useEffect } from "react";
 import * as yup from "yup";
@@ -19,17 +20,19 @@ import { ImageUpload } from "./imageUpload";
 import { UseStoreContext } from "../../hooks/useStoreContext";
 import { createNewItem } from "../../services/api";
 import { debounce } from "lodash";
+import { colorVariants, fontFamily, fontWeight } from "../../global/string";
+import { FocusableTextInput } from "./modals/focusableTextInput";
 
 const ItemSchema = yup.object({
-  brandName: yup.string().required(),
-  subType: yup.array().required(),
-  mainType: yup.string().required(),
-  size: yup.string().required(),
-  itemName: yup.string().required(),
-  price: yup.number().required(),
-  gender: yup.string().required(),
-  category: yup.string().required(),
-  image: yup.string().required(),
+  brandName: yup.string().required("Brand Name is required"),
+  subType: yup.array().min(1, "Sub Type is required"),
+  mainType: yup.string().required("Main Type is required"),
+  size: yup.string().required("Size is required"),
+  itemName: yup.string().required("Item Name is required"),
+  price: yup.number().moreThan(0, "Price is required"),
+  gender: yup.string().required("Gender is required"),
+  category: yup.string().required("Category is required"),
+  image: yup.string().required("Image is required"),
 });
 
 const initialValues = {
@@ -58,18 +61,14 @@ export const AddItemForm = ({
     categorySelectionOption,
   } = GlobalConstants;
 
-  const debouncedTypeSelectionHandler = () => {
-    debounce(typeSelectionHandler, 300);
-  };
-
   const [showActivityIndicator, setShowActivityIndicator] = useState(false);
 
-  const [selectedGender, setSelectedGender] = useState("male");
+  const [selectedGender, setSelectedGender] = useState("");
   const genderSelectionHandler = (gender) => {
     setSelectedGender(gender);
   };
 
-  const { dispatch, stores } = UseStoreContext();
+  const { dispatch } = UseStoreContext();
 
   const [selectedSize, setSelectedSize] = useState("");
   const sizeSelectionHandler = (size) => {
@@ -163,110 +162,137 @@ export const AddItemForm = ({
         formikRef.current = props;
 
         return (
-          <ScrollView>
-            <ImageUpload chooseImage={setImage} />
-            <Text style={globalStyles.errorText}>
-              {props.touched["image"] && props.errors["image"]}
-            </Text>
+          <>
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>Add Item</Text>
 
-            <TextInput
-              style={styles.textInput}
-              placeholder="Item Name"
-              onChangeText={props.handleChange("itemName")}
-              value={props.values["itemName"]}
-              onBlur={props.handleBlur("itemName")}
-            />
-            <Text style={globalStyles.errorText}>
-              {props.touched["itemName"] && props.errors["itemName"]}
-            </Text>
-
-            <TextInput
-              style={styles.textInput}
-              placeholder="Brand"
-              onChangeText={props.handleChange("brandName")}
-              value={props.values["brandName"]}
-              onBlur={props.handleBlur("brandName")}
-            />
-            <Text style={globalStyles.errorText}>
-              {props.touched["brandName"] && props.errors["brandName"]}
-            </Text>
-
-            <TextInput
-              style={styles.textInput}
-              placeholder="Price"
-              onChangeText={props.handleChange("price")}
-              value={props.values["price"]}
-              onBlur={props.handleBlur("price")}
-              keyboardType="phone-pad"
-            />
-            <Text style={globalStyles.errorText}>
-              {props.touched["price"] && props.errors["price"]}
-            </Text>
-
-            <DropDown
-              data={genderSelectionOptions}
-              searchBoolean={false}
-              onSelectFunction={genderSelectionHandler}
-              placeholder="Select Gender"
-            />
-            <Text style={globalStyles.errorText}>
-              {props.touched["gender"] && props.errors["gender"]}
-            </Text>
-
-            <DropDown
-              data={categorySelectionOption}
-              searchBoolean={false}
-              onSelectFunction={categorySelectionHandler}
-              placeholder="Select Category"
-            />
-            <Text style={globalStyles.errorText}>
-              {props.touched["category"] && props.errors["category"]}
-            </Text>
-
-            <DropDown
-              data={mainTypeSelectionOption}
-              searchBoolean={false}
-              onSelectFunction={mainTypeSelectionHandler}
-              placeholder="Select Main Type"
-            />
-            <Text style={globalStyles.errorText}>
-              {props.touched["mainType"] && props.errors["mainType"]}
-            </Text>
-
-            <MultiSelectionDropDown
-              data={typeSelectionOption}
-              searchBoolean={true}
-              label={"Selected Sub Types"}
-              onSelectFunction={debouncedTypeSelectionHandler}
-              placeholder="Select Sub Type"
-            />
-
-            <Text style={globalStyles.errorText}>
-              {props.touched["subType"] && props.errors["subType"]}
-            </Text>
-
-            <DropDown
-              data={sizeSelectionOption}
-              searchBoolean={false}
-              onSelectFunction={sizeSelectionHandler}
-              placeholder="Select Size"
-            />
-            <Text style={globalStyles.errorText}>
-              {props.touched["size"] && props.errors["size"]}
-            </Text>
-
-            <View style={{ marginTop: 20 }}>
-              {!showActivityIndicator ? (
-                <Button
-                  title="Register"
-                  color="dodgerblue"
-                  onPress={props.handleSubmit}
-                />
-              ) : (
-                <ActivityIndicator size="medium" color="dodgerblue" />
-              )}
+              <TouchableOpacity
+                onPress={props.handleSubmit}
+                style={{
+                  backgroundColor: props.isValid
+                    ? colorVariants.dodgerblue
+                    : colorVariants.babyBlue,
+                  height: 40,
+                  width: 80,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {showActivityIndicator ? (
+                  <ActivityIndicator
+                    size="small"
+                    color="white"
+                    style={{
+                      flex: 1,
+                    }}
+                  />
+                ) : (
+                  <Text
+                    style={{
+                      color: "white",
+                      fontFamily: fontFamily.subTitleText,
+                      fontWeight: fontWeight.bold,
+                      fontSize: 15,
+                    }}
+                  >
+                    Register
+                  </Text>
+                )}
+              </TouchableOpacity>
             </View>
-          </ScrollView>
+            <ScrollView
+              style={{
+                top: 25,
+                marginBottom: 40,
+              }}
+            >
+              <ImageUpload chooseImage={setImage} />
+              <Text style={globalStyles.errorText}>
+                {props.touched["image"] && props.errors["image"]}
+              </Text>
+              <FocusableTextInput
+                field="itemName"
+                form={props}
+                placeholder="Item Name"
+              />
+
+              <Text style={globalStyles.errorText}>
+                {props.touched["itemName"] && props.errors["itemName"]}
+              </Text>
+
+              <FocusableTextInput
+                field="brandName"
+                placeholder="Brand"
+                form={props}
+              />
+
+              <Text style={globalStyles.errorText}>
+                {props.touched["brandName"] && props.errors["brandName"]}
+              </Text>
+
+              <FocusableTextInput
+                field="price"
+                placeholder="Price"
+                form={props}
+                keyboardType={"numeric"}
+              />
+
+              <Text style={globalStyles.errorText}>
+                {props.touched["price"] && props.errors["price"]}
+              </Text>
+
+              <DropDown
+                data={genderSelectionOptions}
+                searchBoolean={false}
+                onSelectFunction={genderSelectionHandler}
+                placeholder="Select Gender"
+                form={props}
+              />
+
+              <Text style={globalStyles.errorText}>
+                {props.touched["gender"] && props.errors["gender"]}
+              </Text>
+
+              <DropDown
+                data={categorySelectionOption}
+                searchBoolean={false}
+                onSelectFunction={categorySelectionHandler}
+                placeholder="Select Category"
+              />
+              <Text style={globalStyles.errorText}>
+                {props.touched["category"] && props.errors["category"]}
+              </Text>
+
+              <DropDown
+                data={mainTypeSelectionOption}
+                searchBoolean={false}
+                onSelectFunction={mainTypeSelectionHandler}
+                placeholder="Select Main Type"
+              />
+              <Text style={globalStyles.errorText}>
+                {props.touched["mainType"] && props.errors["mainType"]}
+              </Text>
+
+              <MultiSelectionDropDown
+                data={typeSelectionOption}
+                searchBoolean={true}
+                label={"Selected Sub Types"}
+                onSelectFunction={typeSelectionHandler}
+                placeholder="Select Sub Type"
+              />
+              <Text style={globalStyles.errorText}>
+                {props.touched["subType"] && props.errors["subType"]}
+              </Text>
+
+              <DropDown
+                data={sizeSelectionOption}
+                searchBoolean={false}
+                onSelectFunction={sizeSelectionHandler}
+                placeholder="Select Size"
+              />
+              <Text style={globalStyles.errorText}>{props.errors["size"]}</Text>
+            </ScrollView>
+          </>
         );
       }}
     </Formik>
@@ -274,6 +300,23 @@ export const AddItemForm = ({
 };
 
 const styles = StyleSheet.create({
+  titleContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "center",
+    position: "absolute",
+    top: 0,
+    width: "100%",
+    zIndex: 100,
+    backgroundColor: "white",
+    padding: 10,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "dodgerblue",
+    textAlign: "center",
+  },
   textInput: {
     borderWidth: 1,
     padding: 10,

@@ -1,5 +1,11 @@
-import { FlatList, View, StyleSheet, Text } from "react-native";
-import { Button } from "react-native-rapi-ui";
+import {
+  FlatList,
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import { useState, useEffect } from "react";
 import { AddStoreModal } from "../../components/storeManagement/modals/addStore";
 import { UpdateStoreModal } from "../../components/storeManagement/modals/updateStore";
@@ -9,6 +15,9 @@ import { ActivityIndicator } from "react-native-paper";
 import { StoreCard } from "../../components/storeManagement/storeCard";
 import { getAllStoresForAnOwner } from "../../services/api";
 import { UseHelperContext } from "../../hooks/useHelperContextProvider";
+import { colorVariants } from "../../global/string";
+import { storeImage } from "../../assets";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function StoreSelection({ navigation }) {
   const [updateVisibility, setUpdateModalVisibility] = useState(false);
@@ -21,6 +30,10 @@ export default function StoreSelection({ navigation }) {
 
   const [isStoreListUpdated, setIsStoreListUpdated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [proceedBtnColor, setProceedBtnColor] = useState(
+    colorVariants.babyBlue
+  );
 
   useEffect(() => {
     async function getDataSet() {
@@ -105,34 +118,47 @@ export default function StoreSelection({ navigation }) {
         </View>
       )}
 
-      <FlatList
-        keyExtractor={(store) => store._id}
-        data={storeDataSet}
-        renderItem={({ item }) => (
-          <StoreCard
-            key={item}
-            store={item}
-            selectedStore={selectedStore}
-            setStoreToNavigate={setStoreToNavigate}
-            updateModalVisibility={updateModalVisibility}
-            storeUpdateStatus={storeUpdateStatus}
-          />
-        )}
-      />
+      <View>
+        <Image source={storeImage} style={styles.storeImage} />
+      </View>
+
+      <View style={styles.listContainer}>
+        <FlatList
+          keyExtractor={(store) => store._id}
+          data={storeDataSet}
+          renderItem={({ item }) => (
+            <StoreCard
+              store={item}
+              selectedStore={selectedStore}
+              setStoreToNavigate={setStoreToNavigate}
+              updateModalVisibility={updateModalVisibility}
+              storeUpdateStatus={storeUpdateStatus}
+            />
+          )}
+        />
+      </View>
 
       {storeDataSet?.length > 0 && (
-        <View style={styles.proceedButton}>
-          <Button
-            text="Continue"
-            color={"dodgerblue"}
-            status="primary"
-            disabled={Object.keys(selectedStore)?.length === 0}
-            style={{ borderRadius: 10000 }}
-            textStyle={{ color: "white", fontWeight: "bold", fontSize: 18 }}
-            type="TouchableOpacity"
-            onPress={navigateToStorePage}
+        <TouchableOpacity
+          style={[
+            styles.proceedButton,
+            {
+              backgroundColor: selectedStore._id
+                ? colorVariants.dodgerblue
+                : colorVariants.babyBlue,
+            },
+          ]}
+          onPress={navigateToStorePage}
+        >
+          <MaterialIcons
+            name="navigate-next"
+            size={44}
+            color="black"
+            style={{
+              color: "white",
+            }}
           />
-        </View>
+        </TouchableOpacity>
       )}
     </View>
   );
@@ -141,13 +167,21 @@ export default function StoreSelection({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    backgroundColor: "#fff",
+    backgroundColor: "#f8f4ff",
   },
   proceedButton: {
-    marginBottom: 20,
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+    width: 50,
+    height: 50,
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 100,
+    zIndex: 22,
+    borderColor: "white",
+    borderWidth: 2,
   },
   actionBtn: {
     alignItems: "center",
@@ -164,5 +198,13 @@ const styles = StyleSheet.create({
   },
   emptyStoreListText: {
     fontWeight: "bold",
+  },
+  storeImage: {
+    width: "100%",
+    height: 200,
+  },
+  listContainer: {
+    flex: 1,
+    margin: 10,
   },
 });

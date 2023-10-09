@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Button, Image, View } from "react-native";
+import { Button, Image, Text, TouchableOpacity, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
+import { colorVariants } from "../../global/string";
 
 export function ImageUpload({ chooseImage }) {
   const [image, setImage] = useState(null);
@@ -33,11 +34,51 @@ export function ImageUpload({ chooseImage }) {
 
       {!image ? (
         <View style={{ marginTop: 20 }}>
-          <Button title="Pick an image from camera roll" onPress={pickImage} />
+          <TouchableOpacity
+            onPress={pickImage}
+            style={{
+              backgroundColor: colorVariants.babyBlue,
+              padding: 10,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "ubuntu-regular",
+                fontSize: 18,
+                color: colorVariants.white,
+                fontWeight: "bold",
+              }}
+            >
+              Pick An Image From Camera Roll
+            </Text>
+          </TouchableOpacity>
         </View>
       ) : (
-        <View style={{ marginTop: 20, backgroundColor: "red" }}>
-          <Button title="Remove Image" onPress={() => setImage(null)} />
+        <View style={{ marginTop: 20 }}>
+          <TouchableOpacity
+            onPress={() => setImage(null)}
+            style={{
+              backgroundColor: colorVariants.crimson,
+              padding: 10,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "ubuntu-regular",
+                fontSize: 18,
+                color: colorVariants.white,
+                fontWeight: "bold",
+              }}
+            >
+              Remove Image
+            </Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>
