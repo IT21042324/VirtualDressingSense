@@ -65,12 +65,7 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
 
   return (
     <>
-      <Card
-        style={styles.cardContiner}
-        elevated
-        elevation={5}
-        theme={{ colors: { primary: "green" } }}
-      >
+      <Card style={styles.cardContiner} elevated elevation={5}>
         <Card.Title
           title={`Name: ${item.itemName}`}
           subtitle={`Brand: ${item.brandName}`}
@@ -98,6 +93,14 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
               fontFamily: fontFamily.subTitleText,
             }}
           >{`Price: $${item.price}`}</Text>
+
+          <Text
+            variant="titleMedium"
+            style={{
+              fontWeight: "normal",
+              fontFamily: fontFamily.subTitleText,
+            }}
+          >{`Color: ${item.color}`}</Text>
           <FlatList
             data={item.subType}
             keyExtractor={(item) => item}

@@ -7,6 +7,7 @@ import {
 } from "react-native-popup-menu";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
+import { colorVariants } from "../../global/string";
 
 export const StoreCardMenu = ({
   deleteStoreHandler,
@@ -61,6 +62,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 30,
     right: 10,
+    borderWidth: 3,
+    borderColor: colorVariants.babyBlue,
   },
   menuContainer: {
     flex: 1,
@@ -70,7 +73,9 @@ const styles = StyleSheet.create({
 
   menuOptionUpdate: {
     backgroundColor: "#e0e4f3",
-    padding: 10,
+    padding: 20,
+    borderBottomColor: colorVariants.babyBlue,
+    borderBottomWidth: 1,
   },
   menuOptionText: {
     color: "black",
@@ -78,9 +83,9 @@ const styles = StyleSheet.create({
   },
   menuOptionDelete: {
     backgroundColor: "#e0e4f3",
-    padding: 10,
-    borderTopWidth: 1,
-    borderTopColor: "white",
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: colorVariants.babyBlue,
   },
   selectionImage: {
     height: 40,

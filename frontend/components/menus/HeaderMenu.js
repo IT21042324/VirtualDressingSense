@@ -76,6 +76,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 30,
     right: 10,
+    borderWidth: 2,
+    borderColor: colorVariants.babyBlue,
   },
   menuContainer: {
     flex: 1,
