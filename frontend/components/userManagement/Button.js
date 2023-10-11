@@ -1,6 +1,6 @@
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
-import React from 'react';
-import COLORS from '../../constants/colors';
+import { Text, TouchableOpacity, StyleSheet } from "react-native";
+import React from "react";
+import COLORS from "../../constants/colors";
 
 const Button = (props) => {
   const filledBgColor = props.color || COLORS.primary;
@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
     borderColor: COLORS.primary,
     borderWidth: 2,
     borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 export default Button;

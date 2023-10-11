@@ -10,12 +10,13 @@ const createToken = (id) => {
   //3rd argument-> optional. just to say it expires in 3 days
   return jwt.sign({ id }, process.env.SECRET);
 };
+
 const userLogin = async (req, res) => {
   try {
-    const { userName, password, userType } = req.body;
+    const { userName, password } = req.body;
 
     // Authenticate user using userModel's login method
-    const user = await userModel.login(userName, password, userType);
+    const user = await userModel.login(userName, password);
 
     // Create JWT for authenticated user
     const token = createToken(user._id);
