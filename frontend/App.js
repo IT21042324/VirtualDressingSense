@@ -9,8 +9,8 @@ import { ThemeProvider } from "react-native-elements";
 import { SafeAreaView } from "react-native";
 import { useState } from "react";
 import AppLoading from "expo-app-loading";
-
 import { HelperContextProvider } from "./context/helper";
+import { UserContextProvider } from "./context/userContext";
 
 const getFonts = () =>
   Font.loadAsync({
@@ -26,12 +26,14 @@ export default function App() {
         <RapiLayout>
           <StoreContextProvider>
             <HelperContextProvider>
-              <MenuProvider>
-                <ThemeProvider>
-                  <Navigator />
-                  <Toast />
-                </ThemeProvider>
-              </MenuProvider>
+              <UserContextProvider>
+                <MenuProvider>
+                  <ThemeProvider>
+                    <Navigator />
+                    <Toast />
+                  </ThemeProvider>
+                </MenuProvider>
+              </UserContextProvider>
             </HelperContextProvider>
           </StoreContextProvider>
         </RapiLayout>

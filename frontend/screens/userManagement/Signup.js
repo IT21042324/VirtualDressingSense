@@ -13,6 +13,8 @@ import COLORS from "../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 import Button from "../../components/userManagement/Button";
+import axios from "axios";
+import { UseUserContext } from "../../hooks/useUserContext";
 
 const Signup = ({ navigation }) => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
@@ -32,15 +34,39 @@ const Signup = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [userType, setUserType] = useState("");
+
+  const { setUser } = UseUserContext();
 
   const handleSignup = () => {
-    console.log("Signup details:", {
-      email,
+    const signUpDetails = {
+      userName: email,
       phone,
       password,
       gender,
+      userType,
       measurements,
-    });
+    };
+
+    try {
+      const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
+
+      async function signUp() {
+        const { data } = await axios.post(
+          `${REACT_APP_BACKEND_URL}/api/users/signup/`,
+          signUpDetails
+        );
+
+        setUser(data);
+
+        if (data.userType === "storeOwner")
+          navigation.navigate("Store Selection");
+      }
+
+      signUp();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -153,6 +179,53 @@ const Signup = ({ navigation }) => {
                 value={phone}
                 onChangeText={(text) => setPhone(text)}
               />
+            </View>
+          </View>
+
+          <View style={{ marginBottom: 12 }}>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: 400,
+                marginVertical: 8,
+              }}
+            >
+              User Type
+            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => setUserType("storeOwner")}
+                style={{
+                  width: "48%",
+                  height: 48,
+                  borderColor: COLORS.black,
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text>Store Owner</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setUserType("normalUser")}
+                style={{
+                  width: "48%",
+                  height: 48,
+                  borderColor: COLORS.black,
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text>User</Text>
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -444,6 +517,90 @@ const Signup = ({ navigation }) => {
             }}
             onPress={handleSignup}
           />
+
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginVertical: 20,
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+                height: 1,
+                backgroundColor: COLORS.grey,
+                marginHorizontal: 10,
+              }}
+            />
+            <Text style={{ fontSize: 14 }}>Or Sign up with</Text>
+            <View
+              style={{
+                flex: 1,
+                height: 1,
+                backgroundColor: COLORS.grey,
+                marginHorizontal: 10,
+              }}
+            />
+          </View>
+
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => console.log("Pressed")}
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "row",
+                height: 52,
+                borderWidth: 1,
+                borderColor: COLORS.grey,
+                marginRight: 4,
+                borderRadius: 10,
+              }}
+            >
+              <Image
+                source={require("../../assets/facebook.png")}
+                style={{
+                  height: 36,
+                  width: 36,
+                  marginRight: 8,
+                }}
+                resizeMode="contain"
+              />
+              <Text>Facebook</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => console.log("Pressed")}
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "row",
+                height: 52,
+                borderWidth: 1,
+                borderColor: COLORS.grey,
+                marginRight: 4,
+                borderRadius: 10,
+              }}
+            >
+              <Image
+                source={require("../../assets/google.png")}
+                style={{
+                  height: 36,
+                  width: 36,
+                  marginRight: 8,
+                }}
+                resizeMode="contain"
+              />
+              <Text>Google</Text>
+            </TouchableOpacity>
+          </View>
 
           <View
             style={{

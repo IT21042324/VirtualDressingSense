@@ -12,10 +12,39 @@ import COLORS from "../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 import Button from "../../components/userManagement/Button";
+import axios from "axios";
+import { UseUserContext } from "../../hooks/useUserContext";
 
 const Login = ({ navigation }) => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { setUser } = UseUserContext();
+
+  const onPressHandler = async (userDetails) => {
+    try {
+      const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
+
+      async function login() {
+        const { data } = await axios.post(
+          `${REACT_APP_BACKEND_URL}/api/users/login/`,
+          { userName, password }
+        );
+
+        setUser(data);
+
+        if (data.userType === "storeOwner")
+          navigation.navigate("Store Selection");
+      }
+
+      login();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -72,6 +101,7 @@ const Login = ({ navigation }) => {
               style={{
                 width: "100%",
               }}
+              onChangeText={(text) => setUserName(text)}
             />
           </View>
         </View>
@@ -106,6 +136,7 @@ const Login = ({ navigation }) => {
               style={{
                 width: "100%",
               }}
+              onChangeText={(text) => setPassword(text)}
             />
 
             <TouchableOpacity
@@ -147,6 +178,12 @@ const Login = ({ navigation }) => {
             marginTop: 18,
             marginBottom: 4,
           }}
+          onPress={() =>
+            onPressHandler({
+              userName,
+              password,
+            })
+          }
         />
 
         <View
