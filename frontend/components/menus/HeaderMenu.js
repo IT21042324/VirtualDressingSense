@@ -12,9 +12,15 @@ import { UseHelperContext } from "../../hooks/useHelperContextProvider";
 import { CreateReport } from "../storeManagement/createReport";
 import { UseStoreContext } from "../../hooks/useStoreContext";
 import { colorVariants } from "../../global/string";
+import { UseUserContext } from "../../hooks/useUserContext";
+import { StoreReportInfo } from "../../reports/storeReport";
 
 export const HeaderMenuOptions = ({ title }) => {
   const { dispatch } = UseHelperContext();
+
+  const { user } = UseUserContext();
+
+  const { generateReportForStoresWithUserId } = StoreReportInfo();
 
   const [newComponentLabel, setNewComponentLabel] = useState("Store");
 
@@ -38,7 +44,8 @@ export const HeaderMenuOptions = ({ title }) => {
       },
       {
         text: "OK",
-        onPress: async () => await CreateReport(stores),
+        onPress: async () =>
+          await CreateReport(stores, user, generateReportForStoresWithUserId),
       },
     ]);
   };

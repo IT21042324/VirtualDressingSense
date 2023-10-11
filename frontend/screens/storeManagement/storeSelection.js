@@ -41,6 +41,8 @@ export default function StoreSelection({ navigation }) {
     async function getDataSet() {
       const { data } = await getAllStoresForAnOwner();
 
+      console.log(data);
+
       if (data?.length >= 0) {
         setStoreDataSet(data);
         dispatch({ type: "SetStores", payload: data });
