@@ -3,114 +3,162 @@ import {
   View,
   StyleSheet,
   Text,
-  Button,
   TouchableOpacity,
-  Modal,
+  Image,
 } from "react-native";
 import { useState, useEffect } from "react";
-import { CustomModal } from "../../components/storeManagement/customModal";
-import axios from "axios";
+import { AddStoreModal } from "../../components/storeManagement/modals/addStore";
+import { UpdateStoreModal } from "../../components/storeManagement/modals/updateStore";
 import Toast from "react-native-toast-message";
+import { UseStoreContext } from "../../hooks/useStoreContext";
+import { ActivityIndicator } from "react-native-paper";
+import { StoreCard } from "../../components/storeManagement/storeCard";
+import { getAllStoresForAnOwner } from "../../services/api";
+import { UseHelperContext } from "../../hooks/useHelperContextProvider";
+import { colorVariants } from "../../global/string";
+import { storeImage } from "../../assets";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function StoreSelection({ navigation }) {
-  const [selectedStore, setSelectedStore] = useState("");
-  const [modalVisibility, setModalVisibility] = useState(false);
+  const [updateVisibility, setUpdateModalVisibility] = useState(false);
+
   const [storeDataSet, setStoreDataSet] = useState([]);
 
+  const { dispatch } = UseStoreContext();
+
+  const [selectedStore, setSelectedStore] = useState({});
+
+  const [isStoreListUpdated, setIsStoreListUpdated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [proceedBtnColor, setProceedBtnColor] = useState(
+    colorVariants.babyBlue
+  );
+
   useEffect(() => {
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Zjc0M2UwNDAzNzQxZDQzNmMxZTZiZSIsImlhdCI6MTY5MzkyNjM2OCwiZXhwIjoxNjk0MTg1NTY4fQ.S5gfmagFa3zWtUlTyMbTpxEum8JfMLg8ufEJC0rRroU";
-
-    const _id = "64f8754e1cd2fd7cda7d8725";
-
     async function getDataSet() {
-      try {
-        const { data } = await axios.get(
-          `http://192.168.1.3:8084/api/stores/owner/${_id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+      const { data } = await getAllStoresForAnOwner();
 
+      if (data?.length >= 0) {
         setStoreDataSet(data);
-      } catch (err) {
+        dispatch({ type: "SetStores", payload: data });
+        setIsStoreListUpdated(false);
+        setIsLoading(false);
+      } else {
         Toast.show({
           type: "error",
           text1: "Unable to fetch data",
-          text2: "Please restart the application",
         });
+
+        setIsLoading(false);
       }
     }
     getDataSet();
-  }, []);
+  }, [isStoreListUpdated]);
+
+  const storeUpdateStatus = () => {
+    setIsStoreListUpdated(true);
+  };
+
+  const { helperContext } = UseHelperContext();
+  const helperDispath = UseHelperContext().dispatch;
+
+  const { showAddStoreForm } = helperContext;
 
   const changeModalVisibility = (status) => {
-    setModalVisibility(status);
+    helperDispath({
+      type: "showAddStoreFormStatus",
+      status,
+    });
+  };
+
+  const updateModalVisibility = (status) => {
+    setUpdateModalVisibility(status);
+  };
+
+  const navigateToStorePage = () => {
+    navigation.navigate("Store", selectedStore);
+  };
+
+  const setStoreToNavigate = (store) => {
+    setSelectedStore(store);
   };
 
   return (
     <View style={styles.container}>
-      {(storeDataSet?.length || [].length <= 7) && (
-        <View style={{ zIndex: 100 }}>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={styles.actionBtn}
-            onPress={() => changeModalVisibility(true)}
-          >
-            <Text style={{ color: "white", fontSize: 50, fontWeight: "bold" }}>
-              +
-            </Text>
-          </TouchableOpacity>
-        </View>
+      {showAddStoreForm && (
+        <AddStoreModal
+          changeModalVisibility={changeModalVisibility}
+          storeUpdateStatus={storeUpdateStatus}
+        />
       )}
-
-      {modalVisibility && (
-        <CustomModal changeModalVisibility={changeModalVisibility} />
+      {updateVisibility && (
+        <UpdateStoreModal
+          changeModalVisibility={updateModalVisibility}
+          storeDetails={selectedStore}
+          storeUpdateStatus={storeUpdateStatus}
+        />
       )}
-
-      {(storeDataSet?.length === 0 || [].length === 0) && (
+      {storeDataSet?.length === 0 && !isLoading && (
         <View style={styles.emptyStoreListContainer}>
-          <Text style={{ fontWeight: "bold" }}>No Stores To Display</Text>
+          <Text style={styles.emptyStoreListText}>No Stores To Display</Text>
+        </View>
+      )}
+      {isLoading && (
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            position: "relative",
+            height: "80%",
+          }}
+        >
+          <ActivityIndicator size="large" color={"dodgerblue"} />
+          <Text style={{ padding: 20, fontSize: 20 }}>Loading...</Text>
         </View>
       )}
 
-      <FlatList
-        keyExtractor={(item) => item.id}
-        data={storeDataSet}
-        renderItem={({ item }) => {
-          return (
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() => {
-                setSelectedStore(item);
-              }}
-            >
-              <View
-                style={[
-                  styles.item,
-                  {
-                    backgroundColor:
-                      selectedStore?.storeName === item.storeName
-                        ? "dodgerblue"
-                        : "grey",
-                  },
-                ]}
-              >
-                <Text style={styles.storeName} numberOfLines={1}>
-                  {item.storeName}
-                </Text>
-                <Text style={styles.location}>{item.address}</Text>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-      />
-      {(storeDataSet?.length > 0 || [].length > 0) && (
-        <View style={styles.proceedButton}>
-          <Button title="Proceed" disabled={!selectedStore} />
-        </View>
+      <View>
+        <Image source={storeImage} style={styles.storeImage} />
+      </View>
+
+      <View style={styles.listContainer}>
+        <FlatList
+          keyExtractor={(store) => store._id}
+          data={storeDataSet}
+          renderItem={({ item }) => (
+            <StoreCard
+              store={item}
+              selectedStore={selectedStore}
+              setStoreToNavigate={setStoreToNavigate}
+              updateModalVisibility={updateModalVisibility}
+              storeUpdateStatus={storeUpdateStatus}
+            />
+          )}
+        />
+      </View>
+
+      {storeDataSet?.length > 0 && (
+        <TouchableOpacity
+          style={[
+            styles.proceedButton,
+            {
+              backgroundColor: selectedStore._id
+                ? colorVariants.dodgerblue
+                : colorVariants.babyBlue,
+            },
+          ]}
+          onPress={navigateToStorePage}
+        >
+          <MaterialIcons
+            name="navigate-next"
+            size={44}
+            color="black"
+            style={{
+              color: "white",
+            }}
+          />
+        </TouchableOpacity>
       )}
     </View>
   );
@@ -119,40 +167,25 @@ export default function StoreSelection({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    backgroundColor: "#fff",
-  },
-  item: {
-    flex: 1,
-    marginTop: 5,
-    marginBottom: 10,
-    paddingTop: 5,
-    paddingBottom: 15,
-    paddingLeft: 5,
-    fontSize: 24,
-  },
-  storeName: {
-    fontSize: 30,
-    fontWeight: "bold",
-    margin: 5,
-    color: "white",
-  },
-  location: {
-    fontSize: 20,
-    color: "white",
-    marginLeft: 5,
+    backgroundColor: "#f8f4ff",
   },
   proceedButton: {
-    marginTop: 20,
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+    width: 50,
+    height: 50,
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 100,
+    zIndex: 22,
+    borderColor: "white",
+    borderWidth: 2,
   },
   actionBtn: {
     alignItems: "center",
     width: 70,
-    position: "absolute",
-    top: 450,
-    right: 5,
     height: 70,
     backgroundColor: "dodgerblue",
     borderRadius: 100,
@@ -162,5 +195,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     top: 20,
+  },
+  emptyStoreListText: {
+    fontWeight: "bold",
+  },
+  storeImage: {
+    width: "100%",
+    height: 200,
+  },
+  listContainer: {
+    flex: 1,
+    margin: 10,
   },
 });

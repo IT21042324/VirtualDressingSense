@@ -8,7 +8,7 @@ const createToken = (id) => {
   //1st argument->object for payload
   //2nd argument-> secret string only know for our server (.env file)
   //3rd argument-> optional. just to say it expires in 3 days
-  return jwt.sign({ id }, process.env.SECRET, { expiresIn: "3d" });
+  return jwt.sign({ id }, process.env.SECRET);
 };
 const userLogin = async (req, res) => {
   try {

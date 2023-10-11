@@ -1,0 +1,21 @@
+{
+    "name": "spm-project",
+    "version": "1.0.0",
+    "description": "This repository contains the source code for a project developed as part of the SPM module during the 2st semester of our 3rd year.",
+    "main": "index.js",
+    "scripts": {
+      "install-server": "cd backend && npm install",
+      "start-server": "cd backend && node server.js"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/IT21042324/VirtualDressingSense.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/IT21042324/VirtualDressingSense/issues"
+    },
+    "homepage": "https://github.com/IT21042324/VirtualDressingSense#readme"
+  }

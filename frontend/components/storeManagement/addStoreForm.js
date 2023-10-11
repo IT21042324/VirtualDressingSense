@@ -19,7 +19,9 @@ const StoreSchema = yup.object({
   owner: yup.string().required(),
 });
 
-export const AddStoreForm = ({ changeVisibility }) => {
+export const AddStoreForm = ({ changeVisibility, storeUpdateStatus }) => {
+  const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
+
   const token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Zjc0M2UwNDAzNzQxZDQzNmMxZTZiZSIsImlhdCI6MTY5MzkyNjM2OCwiZXhwIjoxNjk0MTg1NTY4fQ.S5gfmagFa3zWtUlTyMbTpxEum8JfMLg8ufEJC0rRroU";
 
@@ -29,7 +31,7 @@ export const AddStoreForm = ({ changeVisibility }) => {
     try {
       setShowActivityIndicator(true);
       const { data } = await axios.post(
-        "http://192.168.1.3:8084/api/stores/",
+        `${REACT_APP_BACKEND_URL}/api/stores/`,
         values,
         {
           headers: {
@@ -42,6 +44,8 @@ export const AddStoreForm = ({ changeVisibility }) => {
         type: "success",
         text1: "Store Registered Successfully",
       });
+
+      storeUpdateStatus();
     } catch (err) {
       Toast.show({
         type: "error",

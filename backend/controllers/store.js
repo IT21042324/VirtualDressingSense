@@ -1,5 +1,6 @@
 const storeModel = require("../model/store");
 const itemModel = require("../model/item");
+const brandModel = require("../model/brand");
 
 const createStore = async (req, res) => {
   try {
@@ -32,42 +33,100 @@ const getAllStores = async (req, res) => {
 };
 
 const addItemToStore = async (req, res) => {
-  //here req.body only contains the item model properties only.
   const { storeId } = req.params;
+  const {
+    itemName,
+    brandName,
+    measurementsType,
+    mainType,
+    subType,
+    measurements,
+    image,
+    gender,
+    category,
+    type,
+    size,
+    price,
+    color,
+  } = req.body;
 
   try {
-    const item = await itemAlreadyExists(req.body);
+    const brand = await brandModel.findOne({ brandName: brandName });
+
+    var item;
+    brand ? (item = await itemAlreadyExists(brand._id, type)) : (item = false);
 
     if (item) {
-      await itemModel.findByIdAndUpdate(item._id, {
-        $pull: { store: storeId }, //to remove the storeId
-        $push: { store: storeId }, //to again reenter the storeId
-      });
-      await storeModel.findByIdAndUpdate(storeId, {
-        $pull: { items: item._id },
-        $push: { items: item._id },
-      });
-    } else {
-      const item = await itemModel.create(req.body);
-
-      if (item) {
-        await storeModel.findByIdAndUpdate(storeId, {
+      const updatedItem = await itemModel.findByIdAndUpdate(
+        item._id,
+        {
+          $pull: { store: storeId }, //to remove the storeId
+          $push: { store: storeId }, //to again reenter the storeId
+        },
+        { new: true }
+      );
+      const updatedStore = await storeModel.findByIdAndUpdate(
+        storeId,
+        {
+          $pull: { items: item._id },
           $push: { items: item._id },
+        },
+        { new: true }
+      );
+
+      res.status(200).json({ item: updatedItem, store: updatedStore });
+    } else {
+      let newBrand;
+
+      !brand
+        ? (newBrand = await brandModel.create({
+            brandName,
+          }))
+        : (newBrand = brand);
+
+      if (newBrand) {
+        const newItem = await itemModel.create({
+          itemName,
+          store: storeId,
+          brand: newBrand._id,
+          measurementsType,
+          mainType,
+          measurements,
+          subType,
+          image,
+          gender,
+          category,
+          type,
+          size,
+          price,
+          color,
         });
+
+        if (newItem) {
+          const updatedStore = await storeModel.findByIdAndUpdate(
+            storeId,
+            {
+              $push: { items: newItem._id },
+            },
+            { new: true }
+          );
+          res.status(200).json({ item: newItem, store: updatedStore });
+        }
+      } else {
+        throw new Error("Unable to locate/create Brand");
       }
     }
-    res.status(200).json(item);
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
     res.status(500).json(err);
   }
 };
 
-async function itemAlreadyExists(item) {
+async function itemAlreadyExists(brandId, type) {
   try {
     const item = await itemModel.findOne({
-      brand: item.brand,
-      type: item.type,
+      brand: brandId,
+      type: type,
     });
 
     if (item) {
@@ -91,15 +150,24 @@ const deleteStoreById = async function deleteStoreById(req, res) {
 };
 
 const deleteItemFromStoreUsingStoreId = async (req, res) => {
-  const { itemId } = req.body;
+  let { itemId } = req.body;
+  const { ObjectId } = require("mongoose").Types;
+  itemId = new ObjectId(itemId);
 
   try {
-    const store = await storeModel.findByIdAndUpdate(req.params.id, {
-      $pull: { items: itemId },
-    });
+    const item = await itemModel.findByIdAndDelete(itemId);
+
+    const store = await storeModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        $pull: { items: { $eq: itemId } },
+      },
+      { new: true }
+    );
+
     res.status(200).json(store);
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
     res.status(500).json(err);
   }
 };
@@ -111,7 +179,33 @@ const getAllStoresForOwner = async (req, res) => {
     });
     res.status(200).json(stores);
   } catch (err) {
+    console.log(err);
     console.log(err.message);
+    res.status(500).json(err);
+  }
+};
+
+const getAllItemsOfTheStoreUsingStoreId = async (req, res) => {
+  try {
+    const items = await storeModel
+      .findById(req.params.id)
+      .select("-_id items")
+      .exec();
+    res.status(200).json(items);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json(err.message);
+  }
+};
+
+const updateBasicStoreDetails = async (req, res) => {
+  try {
+    const store = await storeModel.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    res.status(200).json(store);
+  } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 };
@@ -124,4 +218,6 @@ module.exports = {
   deleteStoreById,
   deleteItemFromStoreUsingStoreId,
   getAllStoresForOwner,
+  getAllItemsOfTheStoreUsingStoreId,
+  updateBasicStoreDetails,
 };
