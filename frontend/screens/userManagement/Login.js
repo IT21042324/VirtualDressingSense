@@ -36,6 +36,8 @@ const Login = ({ navigation }) => {
 
         setUser(data);
 
+        console.log(data);
+
         if (data.userType === "storeOwner")
           navigation.navigate("Store Selection");
       }

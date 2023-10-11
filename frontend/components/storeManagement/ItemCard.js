@@ -4,7 +4,7 @@ import { Avatar, Button, Card, Text } from "react-native-paper";
 import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
 import { UseStoreContext } from "../../hooks/useStoreContext";
-import { deleteItemFromStore, loadItemForItemCard } from "../../services/api";
+import { UseBackEndApi } from "../../services/api";
 import { colorVariants, fontFamily, fontStyle } from "../../global/string";
 
 const LeftContent = (props) => <Avatar.Icon {...props} icon="tshirt-crew" />;
@@ -15,6 +15,8 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
     useState(false);
 
   const { dispatch } = UseStoreContext();
+
+  const { deleteItemFromStore, loadItemForItemCard } = UseBackEndApi();
 
   const onDeletePressHandler = () => {
     Alert.alert("Delete Item", "Are you sure you want to delete this item?", [

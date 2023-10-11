@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import Toast from "react-native-toast-message";
-import { deleteStoreById } from "../../services/api";
+import { UseBackEndApi } from "../../services/api";
 import { StoreCardMenu } from "../menus/customStoreCardMenu";
 import { colorVariants } from "../../global/string";
 
@@ -11,6 +11,8 @@ export const StoreCard = ({
   selectedStore,
   storeUpdateStatus,
 }) => {
+  const { deleteStoreById } = UseBackEndApi();
+
   const setCurrentStoreInfo = () => {
     setStoreToNavigate(store);
   };
