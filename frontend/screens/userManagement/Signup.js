@@ -6,35 +6,35 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-} from 'react-native';
-import React, { useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import COLORS from '../../constants/colors';
-import { Ionicons } from '@expo/vector-icons';
-import Checkbox from 'expo-checkbox';
-import Button from '../../components/userManagement/Button';
+} from "react-native";
+import React, { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import COLORS from "../../constants/colors";
+import { Ionicons } from "@expo/vector-icons";
+import Checkbox from "expo-checkbox";
+import Button from "../../components/userManagement/Button";
 
 const Signup = ({ navigation }) => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [gender, setGender] = useState('');
+  const [gender, setGender] = useState("");
   const [measurements, setMeasurements] = useState({
-    height: '',
-    weight: '',
-    bustGirth: '',
-    neckGirth: '',
-    sleeve: '',
-    waistGirth: '',
-    hipGirth: '',
-    inseam: '',
+    height: "",
+    weight: "",
+    bustGirth: "",
+    neckGirth: "",
+    sleeve: "",
+    waistGirth: "",
+    hipGirth: "",
+    inseam: "",
   });
 
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSignup = () => {
-    console.log('Signup details:', {
+    console.log("Signup details:", {
       email,
       phone,
       password,
@@ -51,7 +51,7 @@ const Signup = ({ navigation }) => {
             <Text
               style={{
                 fontSize: 22,
-                fontWeight: 'bold',
+                fontWeight: "bold",
                 marginVertical: 12,
                 color: COLORS.black,
               }}
@@ -82,13 +82,13 @@ const Signup = ({ navigation }) => {
 
             <View
               style={{
-                width: '100%',
+                width: "100%",
                 height: 48,
                 borderColor: COLORS.black,
                 borderWidth: 1,
                 borderRadius: 8,
-                alignItems: 'center',
-                justifyContent: 'center',
+                alignItems: "center",
+                justifyContent: "center",
                 paddingLeft: 22,
               }}
             >
@@ -97,7 +97,7 @@ const Signup = ({ navigation }) => {
                 placeholderTextColor={COLORS.black}
                 keyboardType="email-address"
                 style={{
-                  width: '100%',
+                  width: "100%",
                 }}
                 value={email}
                 onChangeText={(text) => setEmail(text)}
@@ -118,14 +118,14 @@ const Signup = ({ navigation }) => {
 
             <View
               style={{
-                width: '100%',
+                width: "100%",
                 height: 48,
                 borderColor: COLORS.black,
                 borderWidth: 1,
                 borderRadius: 8,
-                alignItems: 'center',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+                alignItems: "center",
+                flexDirection: "row",
+                justifyContent: "space-between",
                 paddingLeft: 22,
               }}
             >
@@ -134,10 +134,10 @@ const Signup = ({ navigation }) => {
                 placeholderTextColor={COLORS.black}
                 keyboardType="numeric"
                 style={{
-                  width: '12%',
+                  width: "12%",
                   borderRightWidth: 1,
                   borderLeftColor: COLORS.grey,
-                  height: '100%',
+                  height: "100%",
                 }}
                 value={phone}
                 onChangeText={(text) => setPhone(text)}
@@ -148,7 +148,7 @@ const Signup = ({ navigation }) => {
                 placeholderTextColor={COLORS.black}
                 keyboardType="numeric"
                 style={{
-                  width: '80%',
+                  width: "80%",
                 }}
                 value={phone}
                 onChangeText={(text) => setPhone(text)}
@@ -169,13 +169,13 @@ const Signup = ({ navigation }) => {
 
             <View
               style={{
-                width: '100%',
+                width: "100%",
                 height: 48,
                 borderColor: COLORS.black,
                 borderWidth: 1,
                 borderRadius: 8,
-                alignItems: 'center',
-                justifyContent: 'center',
+                alignItems: "center",
+                justifyContent: "center",
                 paddingLeft: 22,
               }}
             >
@@ -184,7 +184,7 @@ const Signup = ({ navigation }) => {
                 placeholderTextColor={COLORS.black}
                 secureTextEntry={isPasswordShown}
                 style={{
-                  width: '100%',
+                  width: "100%",
                 }}
                 value={password}
                 onChangeText={(text) => setPassword(text)}
@@ -193,7 +193,7 @@ const Signup = ({ navigation }) => {
               <TouchableOpacity
                 onPress={() => setIsPasswordShown(!isPasswordShown)}
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   right: 12,
                 }}
               >
@@ -218,34 +218,34 @@ const Signup = ({ navigation }) => {
             </Text>
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+                flexDirection: "row",
+                justifyContent: "space-between",
               }}
             >
               <TouchableOpacity
-                onPress={() => setGender('male')}
+                onPress={() => setGender("male")}
                 style={{
-                  width: '48%',
+                  width: "48%",
                   height: 48,
                   borderColor: COLORS.black,
                   borderWidth: 1,
                   borderRadius: 8,
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <Text>Male</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => setGender('female')}
+                onPress={() => setGender("female")}
                 style={{
-                  width: '48%',
+                  width: "48%",
                   height: 48,
                   borderColor: COLORS.black,
                   borderWidth: 1,
                   borderRadius: 8,
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <Text>Female</Text>
@@ -262,7 +262,7 @@ const Signup = ({ navigation }) => {
                   marginVertical: 8,
                 }}
               >
-                {`Enter ${gender === 'male' ? 'his' : 'her'} measurements`}
+                {`Enter ${gender === "male" ? "his" : "her"} measurements`}
               </Text>
 
               <TextInput
@@ -270,13 +270,13 @@ const Signup = ({ navigation }) => {
                 placeholderTextColor={COLORS.black}
                 keyboardType="numeric"
                 style={{
-                  width: '100%',
+                  width: "100%",
                   height: 48,
                   borderColor: COLORS.black,
                   borderWidth: 1,
                   borderRadius: 8,
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  alignItems: "center",
+                  justifyContent: "center",
                   paddingLeft: 22,
                   marginBottom: 12,
                 }}
@@ -291,13 +291,13 @@ const Signup = ({ navigation }) => {
                 placeholderTextColor={COLORS.black}
                 keyboardType="numeric"
                 style={{
-                  width: '100%',
+                  width: "100%",
                   height: 48,
                   borderColor: COLORS.black,
                   borderWidth: 1,
                   borderRadius: 8,
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  alignItems: "center",
+                  justifyContent: "center",
                   paddingLeft: 22,
                   marginBottom: 12,
                 }}
@@ -307,7 +307,7 @@ const Signup = ({ navigation }) => {
                 }
               />
 
-              {gender === 'male' ? (
+              {gender === "male" ? (
                 <View>
                   <TextInput
                     placeholder="Bust Girth (in)"
@@ -422,7 +422,7 @@ const Signup = ({ navigation }) => {
 
           <View
             style={{
-              flexDirection: 'row',
+              flexDirection: "row",
               marginVertical: 6,
             }}
           >
@@ -447,104 +447,20 @@ const Signup = ({ navigation }) => {
 
           <View
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginVertical: 20,
-            }}
-          >
-            <View
-              style={{
-                flex: 1,
-                height: 1,
-                backgroundColor: COLORS.grey,
-                marginHorizontal: 10,
-              }}
-            />
-            <Text style={{ fontSize: 14 }}>Or Sign up with</Text>
-            <View
-              style={{
-                flex: 1,
-                height: 1,
-                backgroundColor: COLORS.grey,
-                marginHorizontal: 10,
-              }}
-            />
-          </View>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => console.log('Pressed')}
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                height: 52,
-                borderWidth: 1,
-                borderColor: COLORS.grey,
-                marginRight: 4,
-                borderRadius: 10,
-              }}
-            >
-              <Image
-                source={require('../../assets/facebook.png')}
-                style={{
-                  height: 36,
-                  width: 36,
-                  marginRight: 8,
-                }}
-                resizeMode="contain"
-              />
-              <Text>Facebook</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => console.log('Pressed')}
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                height: 52,
-                borderWidth: 1,
-                borderColor: COLORS.grey,
-                marginRight: 4,
-                borderRadius: 10,
-              }}
-            >
-              <Image
-                source={require('../../assets/google.png')}
-                style={{
-                  height: 36,
-                  width: 36,
-                  marginRight: 8,
-                }}
-                resizeMode="contain"
-              />
-              <Text>Google</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
+              flexDirection: "row",
+              justifyContent: "center",
               marginVertical: 22,
             }}
           >
             <Text style={{ fontSize: 16, color: COLORS.black }}>
               Already have an account
             </Text>
-            <Pressable onPress={() => navigation.navigate('Login')}>
+            <Pressable onPress={() => navigation.navigate("Login")}>
               <Text
                 style={{
                   fontSize: 16,
                   color: COLORS.primary,
-                  fontWeight: 'bold',
+                  fontWeight: "bold",
                   marginLeft: 6,
                 }}
               >
@@ -560,13 +476,13 @@ const Signup = ({ navigation }) => {
 
 const styles = {
   input: {
-    width: '100%',
+    width: "100%",
     height: 48,
     borderColor: COLORS.black,
     borderWidth: 1,
     borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingLeft: 22,
     marginBottom: 12,
   },

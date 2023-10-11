@@ -28,7 +28,7 @@ const ItemSchema = yup.object({
   mainType: yup.string().required("Main Type is required"),
   size: yup.string().required("Size is required"),
   itemName: yup.string().required("Item Name is required"),
-  price: yup.number().moreThan(0, "Price is required"),
+  price: yup.number().required().moreThan(0, "Price is required"),
   gender: yup.string().required("Gender is required"),
   category: yup.string().required("Category is required"),
   image: yup.string().required("Image is required"),

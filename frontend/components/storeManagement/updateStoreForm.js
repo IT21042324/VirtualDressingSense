@@ -14,8 +14,8 @@ import * as yup from "yup";
 import { globalStyles } from "../../styles/global";
 
 const StoreSchema = yup.object({
-  storeName: yup.string().required().min(4),
-  address: yup.string().required().min(4),
+  storeName: yup.string().required().min(4, "Please enter a valid store name"),
+  address: yup.string().required().min(4, "Please enter a valid store address"),
 });
 
 export const UpdateStoreForm = ({
