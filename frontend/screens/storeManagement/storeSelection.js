@@ -13,7 +13,7 @@ import Toast from "react-native-toast-message";
 import { UseStoreContext } from "../../hooks/useStoreContext";
 import { ActivityIndicator } from "react-native-paper";
 import { StoreCard } from "../../components/storeManagement/storeCard";
-import { getAllStoresForAnOwner } from "../../services/api";
+import { UseBackEndApi } from "../../services/api";
 import { UseHelperContext } from "../../hooks/useHelperContextProvider";
 import { colorVariants } from "../../global/string";
 import { storeImage } from "../../assets";
@@ -21,6 +21,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 export default function StoreSelection({ navigation }) {
   const [updateVisibility, setUpdateModalVisibility] = useState(false);
+
+  const { getAllStoresForAnOwner } = UseBackEndApi();
 
   const [storeDataSet, setStoreDataSet] = useState([]);
 

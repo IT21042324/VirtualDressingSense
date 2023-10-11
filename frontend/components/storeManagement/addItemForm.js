@@ -18,7 +18,7 @@ import { MultiSelectionDropDown } from "../multipleSelectionList";
 import Toast from "react-native-toast-message";
 import { ImageUpload } from "./imageUpload";
 import { UseStoreContext } from "../../hooks/useStoreContext";
-import { createNewItem } from "../../services/api";
+import { UseBackEndApi } from "../../services/api";
 import { colorVariants, fontFamily, fontWeight } from "../../global/string";
 import { FocusableTextInput } from "./modals/focusableTextInput";
 
@@ -63,6 +63,7 @@ export const AddItemForm = ({
   } = GlobalConstants;
 
   const [showActivityIndicator, setShowActivityIndicator] = useState(false);
+  const { createNewItem } = UseBackEndApi();
 
   const [selectedGender, setSelectedGender] = useState("");
   const genderSelectionHandler = (gender) => {

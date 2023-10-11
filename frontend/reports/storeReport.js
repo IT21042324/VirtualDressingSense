@@ -1,14 +1,18 @@
-import { findBrandById } from "../services/api";
-import { findItemById } from "../services/api";
+import { UseBackEndApi } from "../services/api";
 
 export const generateReportForStoresWithUserId = async (stores) => {
   const numberOfStores = stores.length;
+  const { findItemById, findBrandById } = UseBackEndApi();
 
-  const storeDetails = await generateStoreDetails(stores);
+  const storeDetails = await generateStoreDetails(
+    stores,
+    findItemById,
+    findBrandById
+  );
 
   return { numberOfStores, storeDetails };
 };
-const generateStoreDetails = async (stores) => {
+const generateStoreDetails = async (stores, findItemById, findBrandById) => {
   const storeDetails = [];
 
   for (let store of stores) {

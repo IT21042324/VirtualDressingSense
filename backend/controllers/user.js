@@ -21,8 +21,14 @@ const userLogin = async (req, res) => {
     // Create JWT for authenticated user
     const token = createToken(user._id);
 
+    let data;
+
+    if (user.userType === "storeOwner")
+      data = await storeOwnerModel.findOne({ parent: user._id });
+    else data = await normalUserModel.findOne({ parent: user._id });
+
     // Send JWT and user data in response
-    res.json({ ...user.toObject(), token });
+    res.json({ ...user.toObject(), token, ownerId: data._id });
   } catch (err) {
     console.log(err.message);
     res.json({ err: err.message });
@@ -37,15 +43,17 @@ const userSignUp = async function (req, res) {
     // Create new user using userModel's signup method
     const user = await userModel.signup(userName, password, userType);
 
+    let data;
+
     userType === "normalUser"
-      ? await createNormalUser(user._id)
-      : await createStoreOwner(user._id);
+      ? (data = await createNormalUser(user._id))
+      : (data = await createStoreOwner(user._id));
 
     // Create JWT for new user
     const token = createToken(user._id);
 
     // Send JWT and user data in response
-    res.status(200).json({ ...user.toObject(), token });
+    res.status(200).json({ ...user.toObject(), token, ownerId: data._id });
   } catch (err) {
     console.log(err.message);
     res.json({ err: err.message });
@@ -54,7 +62,8 @@ const userSignUp = async function (req, res) {
 
 const createStoreOwner = async (userId) => {
   try {
-    await storeOwnerModel.create({ parent: userId });
+    const data = await storeOwnerModel.create({ parent: userId });
+    return data;
   } catch (err) {
     console.log(err.message);
     res.json({ err: err.message });
