@@ -5,8 +5,41 @@ export const UseBackEndApi = () => {
   const { user } = UseUserContext();
 
   const token = user.token;
-  const _id = user._id;
+  const _id = user.ownerId;
   const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
+
+  const findItemById = async (itemId) => {
+    try {
+      const { data } = await axios.get(
+        `${REACT_APP_BACKEND_URL}/api/items/${itemId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return { data };
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const findBrandById = async (brand) => {
+    try {
+      const { data } = await axios.get(
+        `${REACT_APP_BACKEND_URL}/api/brands/${brand}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return { data };
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return {
     getAllStoresForAnOwner: async function () {
@@ -25,10 +58,10 @@ export const UseBackEndApi = () => {
         return { err };
       }
     },
-    deleteStoreById: async (_id) => {
+    deleteStoreById: async (storeId) => {
       try {
         const { data } = await axios.delete(
-          `${REACT_APP_BACKEND_URL}/api/stores/delete/${_id}`,
+          `${REACT_APP_BACKEND_URL}/api/stores/delete/${storeId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

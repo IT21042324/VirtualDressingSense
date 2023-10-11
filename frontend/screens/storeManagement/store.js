@@ -18,8 +18,6 @@ export default function Store({ navigation }) {
 
     setItems(itemToSet);
 
-    console.log(itemToSet);
-
     setIsItemUpdated(false);
   }, [isItemsUpdated]);
 

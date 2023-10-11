@@ -3,13 +3,16 @@ import * as FileSystem from "expo-file-system";
 import * as IntentLauncher from "expo-intent-launcher";
 import { Platform } from "react-native";
 import * as Sharing from "expo-sharing";
-import { generateReportForStoresWithUserId } from "../../reports/storeReport";
 import { logoBaseUrl } from "../globalConstants";
 import Chart from "chart.js/auto";
 
 //pass the userId without hardcoding here. maybe use helperContext to store the relevant storeId
-export const CreateReport = async (stores) => {
-  const userId = "12312312312".slice(-5);
+export const CreateReport = async (
+  stores,
+  user,
+  generateReportForStoresWithUserId
+) => {
+  const userId = user._id.slice(-5);
 
   const { storeDetails } = await generateReportForStoresWithUserId(stores);
 

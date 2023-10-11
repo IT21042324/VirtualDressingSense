@@ -12,6 +12,7 @@ import Toast from "react-native-toast-message";
 import { useState } from "react";
 import * as yup from "yup";
 import { globalStyles } from "../../styles/global";
+import { UseUserContext } from "../../hooks/useUserContext";
 
 const StoreSchema = yup.object({
   storeName: yup.string().required().min(4, "Please enter a valid store name"),
@@ -21,6 +22,8 @@ const StoreSchema = yup.object({
 
 export const AddStoreForm = ({ changeVisibility, storeUpdateStatus }) => {
   const REACT_APP_BACKEND_URL = "https://virtualdressingsense.onrender.com";
+
+  const { user } = UseUserContext();
 
   const token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Zjc0M2UwNDAzNzQxZDQzNmMxZTZiZSIsImlhdCI6MTY5MzkyNjM2OCwiZXhwIjoxNjk0MTg1NTY4fQ.S5gfmagFa3zWtUlTyMbTpxEum8JfMLg8ufEJC0rRroU";
@@ -58,7 +61,7 @@ export const AddStoreForm = ({ changeVisibility, storeUpdateStatus }) => {
   return (
     <Formik
       initialValues={{
-        owner: "64f8754e1cd2fd7cda7d8725",
+        owner: user.ownerId,
         storeName: "",
         address: "",
       }}
