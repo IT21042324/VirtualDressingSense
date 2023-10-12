@@ -1,15 +1,16 @@
-import { createStackNavigator } from 'react-navigation-stack';
-import { createAppContainer } from 'react-navigation';
-import StoreSelection from '../screens/storeManagement/storeSelection';
-import Store from '../screens/storeManagement/store';
-import { Login, Signup, Welcome } from '../screens/userManagement';
+import { createStackNavigator } from "react-navigation-stack";
+import { createAppContainer } from "react-navigation";
+import StoreSelection from "../screens/storeManagement/storeSelection";
+import Store from "../screens/storeManagement/store";
+import { Login, Signup, Welcome } from "../screens/userManagement";
 import { Header } from "../components/storeManagement/Header";
+import { colorVariants } from "../global/string";
 
 const screens = {
   Welcome: { screen: Welcome, navigationOptions: { headerShown: false } },
   Login: { screen: Login },
   Signup: { screen: Signup },
-  'Store Selection': {
+  "Store Selection": {
     screen: StoreSelection,
     navigationOptions: {
       headerTitle: () => <Header title={"Store Selection"} />,
@@ -26,9 +27,9 @@ const screens = {
 
 const stackNavigator = createStackNavigator(screens, {
   defaultNavigationOptions: {
-    headerTintColor: '#fff',
+    headerTintColor: "black",
     headerStyle: {
-      backgroundColor: 'dodgerblue',
+      backgroundColor: colorVariants.whiteSmoke,
       height: 60,
     },
   },

@@ -1,5 +1,6 @@
 import { SelectList } from "react-native-dropdown-select-list";
 import { useState } from "react";
+import { colorVariants } from "../global/string";
 
 export const DropDown = ({
   data,
@@ -22,7 +23,7 @@ export const DropDown = ({
         padding: 10,
         fontSize: 18,
         borderRadius: 5,
-        borderColor: "black",
+        borderColor: colorVariants.mediumAquaMarine,
         marginTop: 20,
       }}
     />

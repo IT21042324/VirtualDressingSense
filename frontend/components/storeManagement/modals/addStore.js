@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { AddStoreForm } from "../addStoreForm";
+import { colorVariants } from "../../../global/string";
 
 const ModalContent = ({ changeVisibility, storeUpdateStatus }) => {
   return (
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 20,
     borderWidth: 3,
-    borderColor: "dodgerblue",
+    borderColor: colorVariants.turquesa,
     padding: 35,
     alignItems: "center",
     shadowColor: "red",
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "dodgerblue",
+    color: colorVariants.turquesa,
     textAlign: "center",
   },
 });

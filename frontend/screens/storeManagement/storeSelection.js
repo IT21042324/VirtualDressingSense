@@ -21,13 +21,9 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 export default function StoreSelection({ navigation }) {
   const [updateVisibility, setUpdateModalVisibility] = useState(false);
-
   const { getAllStoresForAnOwner } = UseBackEndApi();
-
   const [storeDataSet, setStoreDataSet] = useState([]);
-
   const { dispatch } = UseStoreContext();
-
   const [selectedStore, setSelectedStore] = useState({});
 
   const [isStoreListUpdated, setIsStoreListUpdated] = useState(false);
@@ -117,7 +113,7 @@ export default function StoreSelection({ navigation }) {
             height: "80%",
           }}
         >
-          <ActivityIndicator size="large" color={"dodgerblue"} />
+          <ActivityIndicator size="large" color={colorVariants.turquesa} />
           <Text style={{ padding: 20, fontSize: 20 }}>Loading...</Text>
         </View>
       )}
@@ -148,8 +144,8 @@ export default function StoreSelection({ navigation }) {
             styles.proceedButton,
             {
               backgroundColor: selectedStore._id
-                ? colorVariants.dodgerblue
-                : colorVariants.babyBlue,
+                ? colorVariants.turquesa
+                : colorVariants.mediumAquaMarine,
             },
           ]}
           onPress={navigateToStorePage}
@@ -191,7 +187,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 70,
     height: 70,
-    backgroundColor: "dodgerblue",
+    backgroundColor: colorVariants.turquesa,
     borderRadius: 100,
   },
   emptyStoreListContainer: {
