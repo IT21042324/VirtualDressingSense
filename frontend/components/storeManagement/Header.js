@@ -1,5 +1,7 @@
 import { View, StyleSheet, Text } from "react-native";
 import { HeaderMenuOptions } from "../menus/HeaderMenu";
+import { fontFamily } from "../../global/string";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export const Header = ({ title }) => {
   const onPressHandler = () => {};
@@ -26,12 +28,13 @@ const styles = StyleSheet.create({
   headerText: {
     fontWeight: "bold",
     fontSize: 20,
-    color: "white",
+    color: "black",
     letterSpacing: 1,
+    fontFamily: fontFamily.titleText,
   },
   icon: {
     position: "absolute",
     right: 0,
-    color: "white",
+    color: "black",
   },
 });

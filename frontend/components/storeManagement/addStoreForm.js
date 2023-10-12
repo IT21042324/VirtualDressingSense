@@ -13,7 +13,7 @@ import { useState } from "react";
 import * as yup from "yup";
 import { globalStyles } from "../../styles/global";
 import { UseUserContext } from "../../hooks/useUserContext";
-import { fontFamily } from "../../global/string";
+import { colorVariants, fontFamily } from "../../global/string";
 
 const StoreSchema = yup.object({
   storeName: yup.string().required().min(4, "Please enter a valid store name"),
@@ -104,11 +104,14 @@ export const AddStoreForm = ({ changeVisibility, storeUpdateStatus }) => {
               {!showActivityIndicator ? (
                 <Button
                   title="Register"
-                  color="dodgerblue"
+                  color={colorVariants.turquesa}
                   onPress={props.handleSubmit}
                 />
               ) : (
-                <ActivityIndicator size="medium" color="dodgerblue" />
+                <ActivityIndicator
+                  size="medium"
+                  color={colorVariants.turquesa}
+                />
               )}
             </View>
           </View>

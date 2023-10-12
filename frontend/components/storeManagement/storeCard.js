@@ -45,8 +45,8 @@ export const StoreCard = ({
           {
             backgroundColor:
               selectedStore?.storeName === store.storeName
-                ? "dodgerblue"
-                : colorVariants.babyBlue,
+                ? colorVariants.turquesa
+                : colorVariants.mediumAquaMarine,
           },
         ]}
       >
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 70,
     height: 70,
-    backgroundColor: "dodgerblue",
+    backgroundColor: colorVariants.turquesa,
     borderRadius: 100,
   },
   actionBtnContainer: {

@@ -1,5 +1,6 @@
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import React from "react";
+import { colorVariants } from "../global/string";
 
 export const MultiSelectionDropDown = ({
   data,
@@ -22,7 +23,7 @@ export const MultiSelectionDropDown = ({
         padding: 10,
         fontSize: 18,
         borderRadius: 5,
-        borderColor: "black",
+        borderColor: colorVariants.mediumAquaMarine,
         marginTop: 20,
       }}
     />

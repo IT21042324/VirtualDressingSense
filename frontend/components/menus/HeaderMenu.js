@@ -54,7 +54,11 @@ export const HeaderMenuOptions = ({ title }) => {
     <View>
       <Menu style={styles.menuContainer}>
         <MenuTrigger>
-          <SimpleLineIcons name="options-vertical" size={24} color="white" />
+          <SimpleLineIcons
+            name="options-vertical"
+            size={24}
+            color={colorVariants.darkGray}
+          />
         </MenuTrigger>
 
         <MenuOptions>

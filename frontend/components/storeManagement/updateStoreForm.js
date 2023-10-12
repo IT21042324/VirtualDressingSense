@@ -12,6 +12,7 @@ import Toast from "react-native-toast-message";
 import { useState } from "react";
 import * as yup from "yup";
 import { globalStyles } from "../../styles/global";
+import { colorVariants } from "../../global/string";
 
 const StoreSchema = yup.object({
   storeName: yup.string().required().min(4, "Please enter a valid store name"),
@@ -104,11 +105,14 @@ export const UpdateStoreForm = ({
               {!showActivityIndicator ? (
                 <Button
                   title="Update"
-                  color="dodgerblue"
+                  color={colorVariants.turquesa}
                   onPress={props.handleSubmit}
                 />
               ) : (
-                <ActivityIndicator size="medium" color="dodgerblue" />
+                <ActivityIndicator
+                  size="medium"
+                  color={colorVariants.turquesa}
+                />
               )}
             </View>
           </View>
@@ -120,11 +124,12 @@ export const UpdateStoreForm = ({
 
 const styles = StyleSheet.create({
   textInput: {
-    borderWidth: 1,
+    borderWidth: 1.5,
     padding: 10,
     fontSize: 18,
-    borderRadius: 5,
+    borderRadius: 3,
     marginTop: 20,
+    borderColor: colorVariants.turquesa,
   },
   titleText: {
     fontSize: 18,

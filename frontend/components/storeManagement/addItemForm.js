@@ -173,8 +173,8 @@ export const AddItemForm = ({
                 onPress={props.handleSubmit}
                 style={{
                   backgroundColor: props.isValid
-                    ? colorVariants.dodgerblue
-                    : colorVariants.babyBlue,
+                    ? colorVariants.turquesa
+                    : colorVariants.mediumAquaMarine,
                   height: 40,
                   width: 80,
                   justifyContent: "center",
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "dodgerblue",
+    color: colorVariants.turquesa,
     textAlign: "center",
   },
   textInput: {

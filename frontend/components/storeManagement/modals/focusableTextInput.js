@@ -10,7 +10,9 @@ export const FocusableTextInput = ({ field, form, keyboardType, ...props }) => {
       style={[
         styles.textInput,
         {
-          borderColor: isFocused ? "dodgerblue" : colorVariants.black,
+          borderColor: isFocused
+            ? colorVariants.turquesa
+            : colorVariants.mediumAquaMarine,
           borderWidth: isFocused ? 2 : 1,
         },
       ]}
