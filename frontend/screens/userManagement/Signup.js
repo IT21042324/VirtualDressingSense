@@ -15,6 +15,7 @@ import Checkbox from "expo-checkbox";
 import Button from "../../components/userManagement/Button";
 import axios from "axios";
 import { UseUserContext } from "../../hooks/useUserContext";
+import { colorVariants } from "../../global/string";
 
 const Signup = ({ navigation }) => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
@@ -35,6 +36,7 @@ const Signup = ({ navigation }) => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [userType, setUserType] = useState("");
+  const [phoneCode, setPhoneCode] = useState("94");
 
   const { setUser } = UseUserContext();
 
@@ -58,6 +60,8 @@ const Signup = ({ navigation }) => {
         );
 
         setUser(data);
+
+        console.log(data);
 
         if (data.userType === "storeOwner")
           navigation.navigate("Store Selection");
@@ -165,8 +169,8 @@ const Signup = ({ navigation }) => {
                   borderLeftColor: COLORS.grey,
                   height: "100%",
                 }}
-                value={phone}
-                onChangeText={(text) => setPhone(text)}
+                value={phoneCode}
+                onChangeText={(text) => setPhoneCode(text)}
               />
 
               <TextInput
@@ -208,6 +212,10 @@ const Signup = ({ navigation }) => {
                   borderRadius: 8,
                   alignItems: "center",
                   justifyContent: "center",
+                  backgroundColor:
+                    userType === "storeOwner"
+                      ? colorVariants.mediumAquaMarine
+                      : null,
                 }}
               >
                 <Text>Store Owner</Text>
@@ -222,6 +230,10 @@ const Signup = ({ navigation }) => {
                   borderRadius: 8,
                   alignItems: "center",
                   justifyContent: "center",
+                  backgroundColor:
+                    userType === "normalUser"
+                      ? colorVariants.mediumAquaMarine
+                      : null,
                 }}
               >
                 <Text>User</Text>
