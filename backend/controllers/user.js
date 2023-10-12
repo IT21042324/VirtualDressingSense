@@ -37,11 +37,16 @@ const userLogin = async (req, res) => {
 
 const userSignUp = async function (req, res) {
   // Get user details from request body
-  const { userName, password, userType } = req.body;
+  const { userName, password, userType, measurements } = req.body;
 
   try {
     // Create new user using userModel's signup method
-    const user = await userModel.signup(userName, password, userType);
+    const user = await userModel.signup(
+      userName,
+      password,
+      userType,
+      measurements
+    );
 
     let data;
 
@@ -153,6 +158,25 @@ const getUserById = async function (req, res) {
   }
 };
 
+const updateMeasurements = async (req, res) => {
+  const { id } = req.params;
+
+  const measurements = req.body;
+
+  try {
+    const user = await userModel.findOneAndUpdate(
+      { _id: id },
+      { measurements },
+      { new: true }
+    );
+
+    res.status(200).json(user);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send(err.message);
+  }
+};
+
 module.exports = {
   userSignUp,
   userLogin,
@@ -160,4 +184,5 @@ module.exports = {
   updateUserName,
   deleteUserById,
   getUserById,
+  updateMeasurements,
 };
