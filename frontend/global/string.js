@@ -1,4 +1,8 @@
 export const padding = {
+  xxxxSmall: 4,
+  xxxSmall: 6,
+  xxSmall: 10,
+  xSmall: 14,
   small: 18,
   medium: 22,
   large: 26,
