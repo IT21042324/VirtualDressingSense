@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     marginTop: 5,
-    backgroundColor: colorVariants.red,
+    backgroundColor: colorVariants.crimson,
     padding: 10,
     elevation: 2,
     width: "100%",

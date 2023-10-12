@@ -67,7 +67,7 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
 
   return (
     <>
-      <Card style={styles.cardContiner} elevated elevation={5}>
+      <Card style={styles.cardContiner} elevated elevation={1}>
         <Card.Title
           title={`Name: ${
             item.itemName && typeof item.itemName === "string"
@@ -155,8 +155,8 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
 
 const styles = StyleSheet.create({
   deleteButtonBackground: {
-    backgroundColor: "red",
-    borderColor: colorVariants.crimson,
+    backgroundColor: "crimson",
+    borderWidth: 0,
   },
   deleteBtnTextFormat: {
     fontWeight: "bold",

@@ -13,6 +13,7 @@ import { useState } from "react";
 import * as yup from "yup";
 import { globalStyles } from "../../styles/global";
 import { UseUserContext } from "../../hooks/useUserContext";
+import { fontFamily } from "../../global/string";
 
 const StoreSchema = yup.object({
   storeName: yup.string().required().min(4, "Please enter a valid store name"),
@@ -73,7 +74,7 @@ export const AddStoreForm = ({ changeVisibility, storeUpdateStatus }) => {
     >
       {(props) => {
         return (
-          <View>
+          <View style={{ margin: 0 }}>
             <TextInput
               style={styles.textInput}
               placeholder="Store Name"
@@ -124,11 +125,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderRadius: 5,
     marginTop: 20,
+    fontFamily: fontFamily.normalText,
   },
   titleText: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#333",
+    fontFamily: fontFamily.normalText,
   },
   paragraph: {
     marginVertical: 8,

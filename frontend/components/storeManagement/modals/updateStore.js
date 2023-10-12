@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { UpdateStoreForm } from "../updateStoreForm";
-import { colorVariants } from "../../../global/string";
+import { colorVariants, fontFamily } from "../../../global/string";
 
 const ModalContent = ({
   changeVisibility,
@@ -59,7 +59,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    position: "absolute",
+    width: "100%",
+    marginTop: "40%",
   },
   modalView: {
     width: "100%",
@@ -90,10 +92,12 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
+    fontFamily: fontFamily.normalText,
   },
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+    fontFamily: fontFamily.normalText,
   },
   // Add styles for the modal content
   content: {
