@@ -191,32 +191,6 @@ const Login = ({ navigation }) => {
         <View
           style={{
             flexDirection: "row",
-            alignItems: "center",
-            marginVertical: 20,
-          }}
-        >
-          <View
-            style={{
-              flex: 1,
-              height: 1,
-              backgroundColor: COLORS.grey,
-              marginHorizontal: 10,
-            }}
-          />
-          <Text style={{ fontSize: 14 }}>Or Login with</Text>
-          <View
-            style={{
-              flex: 1,
-              height: 1,
-              backgroundColor: COLORS.grey,
-              marginHorizontal: 10,
-            }}
-          />
-        </View>
-
-        <View
-          style={{
-            flexDirection: "row",
             justifyContent: "center",
             marginVertical: 22,
           }}
