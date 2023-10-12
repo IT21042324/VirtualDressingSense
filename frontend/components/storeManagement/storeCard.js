@@ -2,7 +2,7 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import Toast from "react-native-toast-message";
 import { UseBackEndApi } from "../../services/api";
 import { StoreCardMenu } from "../menus/customStoreCardMenu";
-import { colorVariants } from "../../global/string";
+import { colorVariants, fontFamily } from "../../global/string";
 
 export const StoreCard = ({
   store,
@@ -59,13 +59,18 @@ export const StoreCard = ({
 
         <View style={styles.storeNameContainer}>
           <Text numberOfLines={1} style={styles.storeName}>
-            {store.storeName}
+            {store.storeName && typeof store.storeName === "string"
+              ? store.storeName.charAt(0).toUpperCase() +
+                store.storeName.slice(1)
+              : ""}
           </Text>
         </View>
 
         <View style={styles.storeAddressContainer}>
           <Text style={styles.location} numberOfLines={1}>
-            {store.address}
+            {store.address && typeof store.address === "string"
+              ? store.address.charAt(0).toUpperCase() + store.address.slice(1)
+              : ""}
           </Text>
         </View>
       </View>
@@ -95,12 +100,14 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
     color: "white",
+    fontFamily: fontFamily.normalText,
   },
   location: {
     fontSize: 20,
     fontWeight: "bold",
     color: "white",
     marginLeft: 5,
+    fontFamily: fontFamily.normalText,
   },
 
   actionBtn: {
