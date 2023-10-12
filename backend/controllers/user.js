@@ -77,7 +77,7 @@ const createStoreOwner = async (userId) => {
 
 const createNormalUser = async (userId) => {
   try {
-    await normalUserModel.create({ parent: userId });
+    const data = await normalUserModel.create({ parent: userId });
     return data;
   } catch (err) {
     console.log(err.message);
