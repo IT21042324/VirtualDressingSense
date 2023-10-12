@@ -40,6 +40,9 @@ const Login = ({ navigation }) => {
 
         if (data.userType === "storeOwner")
           navigation.navigate("Store Selection");
+        else {
+          navigation.navigate("Product");
+        }
       }
 
       login();

@@ -65,6 +65,7 @@ const Signup = ({ navigation }) => {
 
         if (data.userType === "storeOwner")
           navigation.navigate("Store Selection");
+        else navigation.navigate("Product");
       }
 
       signUp();

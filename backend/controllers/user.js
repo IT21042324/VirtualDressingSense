@@ -37,7 +37,7 @@ const userLogin = async (req, res) => {
 
 const userSignUp = async function (req, res) {
   // Get user details from request body
-  const { userName, password, userType, measurements } = req.body;
+  const { userName, password, userType, measurements, gender } = req.body;
 
   try {
     // Create new user using userModel's signup method
@@ -45,7 +45,8 @@ const userSignUp = async function (req, res) {
       userName,
       password,
       userType,
-      measurements
+      measurements,
+      gender
     );
 
     let data;
