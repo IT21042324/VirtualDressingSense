@@ -18,12 +18,21 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    measurements: {
+      type: Object,
+      default: {},
+    },
   },
   { timestamps: true }
 );
 
 //Creating User schema functions
-userSchema.statics.signup = async function (userName, password, userType) {
+userSchema.statics.signup = async function (
+  userName,
+  password,
+  userType,
+  measurements
+) {
   const exist = await this.findOne({ userName });
 
   if (!userName || !password || !userType)
@@ -44,6 +53,7 @@ userSchema.statics.signup = async function (userName, password, userType) {
     userName,
     password: hash,
     userType,
+    measurements,
   });
 
   return singedUser;

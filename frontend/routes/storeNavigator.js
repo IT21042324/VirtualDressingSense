@@ -5,6 +5,7 @@ import Store from "../screens/storeManagement/store";
 import { Login, Signup, Welcome } from "../screens/userManagement";
 import { Header } from "../components/storeManagement/Header";
 import { colorVariants } from "../global/string";
+import { UserProfile } from "../screens/userManagement/profile";
 
 const screens = {
   Welcome: { screen: Welcome, navigationOptions: { headerShown: false } },
@@ -23,6 +24,7 @@ const screens = {
       headerTitle: () => <Header title={"Store"} />,
     },
   },
+  Profile: { screen: UserProfile },
 };
 
 const stackNavigator = createStackNavigator(screens, {
