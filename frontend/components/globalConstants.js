@@ -4,14 +4,26 @@ const GlobalConstants = {
     { key: "2", value: "Female" },
   ],
   sizeSelectionOption: [
-    { key: "1", value: "XXS" },
-    { key: "2", value: "XS" },
-    { key: "3", value: "S" },
-    { key: "4", value: "M" },
-    { key: "5", value: "L" },
-    { key: "6", value: "XL" },
-    { key: "7", value: "XXL" },
+    { key: "1", value: "S" },
+    { key: "2", value: "M" },
+    { key: "3", value: "L" },
+    { key: "4", value: "XL" },
+    { key: "5", value: "XXL" },
+    { key: "6", value: "XXXL" },
+    { key: "7", value: "XXXXL" },
+    { key: "8", value: "XXXXXL" },
   ],
+
+  // sizeSelectionOption: [
+  //   { key: "1", value: ["S", "small"] },
+  //   { key: "2", value: ["M", "medium"] },
+  //   { key: "3", value: ["L", "large"] },
+  //   { key: "4", value: ["XL", "x_large"] },
+  //   { key: "5", value: ["XXL", "xx_large"] },
+  //   { key: "6", value: ["XXXL", "xxx_large"] },
+  //   { key: "7", value: ["XXXXL", "xxxx_large"] },
+  //   { key: "8", value: ["XXXXXL", "xxxxx_large"] },
+  // ],
 
   typeSelectionOption: [
     { key: "1", value: "Formal" },

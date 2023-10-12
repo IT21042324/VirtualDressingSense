@@ -69,8 +69,16 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
     <>
       <Card style={styles.cardContiner} elevated elevation={5}>
         <Card.Title
-          title={`Name: ${item.itemName}`}
-          subtitle={`Brand: ${item.brandName}`}
+          title={`Name: ${
+            item.itemName && typeof item.itemName === "string"
+              ? item.itemName.charAt(0).toUpperCase() + item.itemName.slice(1)
+              : ""
+          }`}
+          subtitle={`Brand: ${
+            item.brandName && typeof item.brandName === "string"
+              ? item.brandName.charAt(0).toUpperCase() + item.brandName.slice(1)
+              : ""
+          }`}
           style={{
             fontFamily: fontFamily.titleText,
           }}
@@ -102,7 +110,14 @@ export const ItemCard = ({ itemId, storeId, itemUpdationStatus }) => {
               fontWeight: "normal",
               fontFamily: fontFamily.subTitleText,
             }}
-          >{`Color: ${item.color}`}</Text>
+          >
+            {`Color: ${
+              item.color && typeof item.color === "string"
+                ? item.color.charAt(0).toUpperCase() + item.color.slice(1)
+                : ""
+            }`}
+          </Text>
+
           <FlatList
             data={item.subType}
             keyExtractor={(item) => item}
