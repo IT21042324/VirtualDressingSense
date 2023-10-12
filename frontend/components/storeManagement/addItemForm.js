@@ -19,6 +19,7 @@ import { UseStoreContext } from "../../hooks/useStoreContext";
 import { UseBackEndApi } from "../../services/api";
 import { colorVariants, fontFamily, fontWeight } from "../../global/string";
 import { FocusableTextInput } from "./modals/focusableTextInput";
+import { getSizeValue } from "../helper";
 
 const ItemSchema = yup.object({
   brandName: yup.string().required("Brand Name is required"),
@@ -100,6 +101,8 @@ export const AddItemForm = ({
 
   const onSubmitHandler = async (values) => {
     setShowActivityIndicator(true);
+
+    values.size = getSizeValue(values.size);
 
     const { data } = await createNewItem({ storeId, ...values });
 
