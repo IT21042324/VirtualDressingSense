@@ -52,7 +52,7 @@ const userSignUp = async function (req, res) {
     let data;
 
     userType === "normalUser"
-      ? (data = await createNormalUser(user._id))
+      ? (data = await createNormalUser(user._id, measurements))
       : (data = await createStoreOwner(user._id));
 
     // Create JWT for new user
@@ -76,9 +76,9 @@ const createStoreOwner = async (userId) => {
   }
 };
 
-const createNormalUser = async (userId) => {
+const createNormalUser = async (userIdmeasurements) => {
   try {
-    const data = await normalUserModel.create({ parent: userId });
+    const data = await normalUserModel.create({ parent: userId, measurements });
     return data;
   } catch (err) {
     console.log(err.message);
