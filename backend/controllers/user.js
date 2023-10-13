@@ -76,7 +76,7 @@ const createStoreOwner = async (userId) => {
   }
 };
 
-const createNormalUser = async (userIdmeasurements) => {
+const createNormalUser = async (userId, measurements) => {
   try {
     const data = await normalUserModel.create({ parent: userId, measurements });
     return data;
